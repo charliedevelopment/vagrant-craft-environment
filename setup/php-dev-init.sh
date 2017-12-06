@@ -8,3 +8,5 @@ composer global require "squizlabs/php_codesniffer=*"
 sed -i '/^PATH=\$PATH/ s/$/:\$HOME\/.config\/composer\/vendor\/bin/' ~/.bash_profile
 # Update the current environment information from the profile.
 source ~/.bash_profile
+# Indicate to PHP CodeSniffer where PHP is installed, for the purpose of syntax checking.
+phpcs --config-set php_path /usr/bin/php
