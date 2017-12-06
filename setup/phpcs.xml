@@ -2,17 +2,10 @@
 <ruleset name="MyStandard">
 	<description>
 		PHP syntax errors
-		PHP documentation blocks
 		PSR2 with tabs instead of spaces (https://gist.github.com/gsherwood/9d22f634c57f990a7c64).
 	</description>
 	
 	<rule ref="Generic.PHP.Syntax"/>
-	
-	<rule ref="Squiz.Commenting.FunctionComment"/>
-	<rule ref="Squiz.Commenting.FunctionCommentThrowTag"/>
-	<rule ref="Squiz.Commenting.ClassComment"/>
-	<rule ref="Squiz.Commenting.FileComment"/>
-	<rule ref="Squiz.Commenting.VariableComment"/>
 
 	<arg name="tab-width" value="4"/>
 	<rule ref="PSR2">
