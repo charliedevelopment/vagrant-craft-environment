@@ -10,3 +10,6 @@ sed -i '/^PATH=\$PATH/ s/$/:\$HOME\/.config\/composer\/vendor\/bin/' ~/.bash_pro
 source ~/.bash_profile
 # Indicate to PHP CodeSniffer where PHP is installed, for the purpose of syntax checking.
 phpcs --config-set php_path /usr/bin/php
+
+# Install the PHP documentor.
+# composer global require "phpdocumentor/phpdocumentor:2.*"
