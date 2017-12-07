@@ -20,6 +20,9 @@ Vagrant.configure("2") do |config|
 	# Treat guest VM as if it is the following IP on the network.
 	config.vm.network "private_network", ip: "192.168.33.10"
 
+	# Allow access to the guest vm's port 80 through the host's port 8081
+	config.vm.network "forwarded_port", guest: 80, host: 8081
+
 	# Disable the default shared folder, we're going to provide more granular options.
 	config.vm.synced_folder ".", "/vagrant", disabled: true
 
