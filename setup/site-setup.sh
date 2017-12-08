@@ -1,8 +1,9 @@
 # This script automates/acts as a reference for cloning a Craft site repository into the workspace.
-# It should be run from the `workspace` directory of the HOST with the following options:
+# It should be run from the vagrant environment directory of the HOST with the following options:
 #
 # site-setup.sh /path/to/repository
 
+cd workspace
 # Create our blank repository with no remote.
 git init
 # Add the provided repository as our remote to pull from.

@@ -36,11 +36,11 @@ That's all you need to do, once finished your Craft installation will be ready t
 
 To shut down, restart, or completely delete the VM, use `vagrant halt`, `vagrant reload`, and `vagrant destroy`, respectively. **Do not use `reboot` via SSH to reboot the machine** as it will not remount shared folders.
 
-> If you want a quick way to reset Craft's database and workspace without destroying the Vagrant box and rebuilding it, while in the guest's terminal, you can run `/setup/craft-reset.sh`, which will drop the database, delete _everything_ from the web directory, and redownload/reinstall craft.
+> If you want a quick way to reset Craft's database and workspace without destroying the Vagrant box and rebuilding it, while in the guest's terminal, you can run `/setup/craft-reset.sh`, which will drop the database, delete _everything_ from the web folder, and redownload/reinstall craft.
 
 ### Files
 
-Within the Vagrant environment folder, a `workspace` folder is created to allow development on the host machine. This folder is mounted to the guest machine as the webserver root folder (`/var/www`) used by Apache. The public directory is configured to the `/var/www/html` folder. **This folder will be automatically deleted when the vagrant machine is destroyed.**
+Within the Vagrant environment folder, a `workspace` folder is created to allow development on the host machine. This folder is mounted to the guest machine as the webserver root folder (`/var/www`) used by Apache. The public folder is configured to the `/var/www/html` folder. **This folder will be automatically deleted when the vagrant machine is destroyed.**
 
 There is an additional `/setup` folder on the guest that is synced from the `setup` folder within the Vagrant environment folder. This contains some scripts and configuration files used in setting up the machine or available for convenience as documented below.
 
@@ -72,24 +72,22 @@ VirtualBox as a provider supports [snapshots](https://www.vagrantup.com/docs/cli
 
 Working with the contents of a Craft site that are synced to a git repository is relatively straightforward. Craft excludes content that isn't necessary from the repository by default, such as the `/vendor` folder, or the contents of the `/html/cpresources` folder.
 
-Generally these repositories contain the data mapped to the web root, so you would normally clone the repository into the Craft install, but you can't clone a git repository to a non-empty directory. An easy solution would be to clone to another location, then copy the files in.
+Generally these repositories contain the data mapped to the web root, so you would normally clone the repository into the Craft install, but you can't clone a git repository to a non-empty folder. An easy solution would be to clone to another location, then copy the files in.
 
-> For convenience, and for reference if setting up automation, there is a script in the `/setup` directory called `site-setup.sh` that assists with this process. Simply call it from a terminal (or something like the git bash, on Windows) while within your `workspace` directory on the host, passing it the repository path.
+> For convenience, and for reference if setting up automation, there is a script in the `/setup` folder called `site-setup.sh` that assists with this process. Simply call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment folder on the host, passing it the repository path.
 
 ```
-cd workspace
 ./../setup/site-setup.sh git@github.com:user/repository
 ```
 
 ## Plugin Development
 
-Craft plugins are Composer packages, which come with some setup and installation requirements, and thus cannot simply be dropped in a directory to install them. Usually they can be installed from external repositories, but for development purposes this typical method is _very_ slow. There are some considerations to make in order facilitate a smooth development experience.
+Craft plugins are Composer packages, which come with some setup and installation requirements, and thus cannot simply be dropped in a folder to install them. Usually they can be installed from external repositories, but for development purposes this typical method is _very_ slow. There are some considerations to make in order facilitate a smooth development experience.
 
-> To skip all the details, and get to working immediately, there is a script in the `/setup` folder called `plugin-require.sh` that will get you up and running with a plugin repository. Simply call it from a terminal (or something like the git bash, on Windows) while within your `workspace` directory on the host, passing it the package name and the repository path. **This method has some caveats outlined further below, though for general adjustments and quick testing, this can get you working without having to know all the details**.
+> To skip all the details, and get to working immediately, there is a script in the `/setup` folder called `plugin-install.sh` that will get you up and running with a plugin repository. Simply call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment filder on the host, passing it the package name and the repository path. **This method has some caveats outlined further below, though for general adjustments and quick testing, this can get you working without having to know all the details**.
 
 ```bash
-cd workspace
-./../setup/plugin-install.sh namespace/plugin git@github.com:user/repository
+./../setup/plugin-install.sh git@github.com:user/repository
 ```
 
 ---
@@ -107,9 +105,9 @@ Composer does provide a mechanism to allow packages to be retrieved through othe
 ],
 ```
 
-Normally this would symlink the given path to the `/vendor` folder where Composer packages are installed, in addition to making the appropriate changes to the package manifests, autoloaders, and `composer.lock` files. **Keep in mind, doing this within VirtualBox's sync filesystem won't use symlinking, and instead copies the files**. This process takes us a step further, allowing our non-public package to be installed to Composer, where we can then make edits to the underlying files in the `/vendor` directory.
+Normally this would symlink the given path to the `/vendor` folder where Composer packages are installed, in addition to making the appropriate changes to the package manifests, autoloaders, and `composer.lock` files. **Keep in mind, doing this within VirtualBox's sync filesystem won't use symlinking, and instead copies the files**. This process takes us a step further, allowing our non-public package to be installed to Composer, where we can then make edits to the underlying files in the `/vendor` folder.
 
-> Keep in mind that while this method may be fairly direct, it has limitations. Updates made directly to packages in the `/vendor` directory aren't picked up by `composer install` and `composer update` commands, meaning changes to version numbers and package information won't be reflected. In the case of Craft plugins, there are even more internal functions of Craft that are run on plugin install/uninstall that may not function properly on in-place edits (notice how plugins have package types of `craft-plugin` and not `library`).
+> Keep in mind that while this method may be fairly direct, it has limitations. Updates made directly to packages in the `/vendor` folder aren't picked up by `composer install` and `composer update` commands, meaning changes to version numbers and package information won't be reflected. In the case of Craft plugins, there are even more internal functions of Craft that are run on plugin install/uninstall that may not function properly on in-place edits (notice how plugins have package types of `craft-plugin` and not `library`).
 
 ---
 
@@ -130,14 +128,12 @@ This now allows us to push our updates to the repository and then `composer upda
 
 There's no one solution that really fulfills requirements of quick in-place editing, while being functionally accurate with updates, simply because of Composer's nature of updating from source packages manually and running scripts to facilitate changes, versus the more traditional approach of dropping in files and detecting that things have changed for updates.
 
-The provided `plugin-require.sh` script attempts to get the best it can from both methods by checking out the plugin from a dummy git repository, which can be reconstituted when updating, and then repointing the upstream branch of the installed package to the original repository. This way active development can be done on the package, but it can also be updated as needed in case of changes being made to composer files or scripts being added. To further assist with individual plugin handling, there are also `plugin-update.sh` and `plugin-remove.sh` scripts that can be run the same way, which will update composer's internal references to package behavior and version numbers, or delete the plugin outright, respectively.
+The provided `plugin-install.sh` script attempts to get the best it can from both methods by checking out the plugin from a dummy git repository, and then repointing the upstream branch of the installed package to the original repository. This way active development can be done on the package, but it can also be updated as needed in case of changes being made to composer files or scripts being added. To further assist with individual plugin handling, there are also `plugin-update.sh` and `plugin-remove.sh` scripts that can be run the same way, which will update composer's internal references to package behavior and version numbers, or delete the plugin outright, respectively.
 
 ```bash
-cd workspace
-./../setup/plugin-update.sh namespace/plugin git@github.com:user/repository
+./setup/plugin-update.sh package/name
 # or
-cd workspace
-./../setup/plugin-remove.sh namespace/plugin git@github.com:user/repository
+./setup/plugin-remove.sh package/name
 ```
 
 ## Code Guidelines/Standards
@@ -155,7 +151,7 @@ phpcbf /path/to/code
 
 ### Customized Ruleset
 
-Keep in mind the PSR-2 style requires spaces instead of tabs, so a slightly modified ruleset needs to be used in order to fit with our current standards. Thankfully, PHPCS allows for modification of its ruleset, either through providing a `--standard=/setup/phpcs-ruleset.xml` switch to its command line parameters, or more conveniently, it searches for a `phpcs.xml` file in the directory of the code being checked, and every parent directory thereof. It is then recommended that the `phpcs.xml` file from the `/setup` folder is included in plugin projects. For reference, there are other ruleset files within the `/setup` driectory as well, with additional suffixes based on their deviations from the standard.
+Keep in mind the PSR-2 style requires spaces instead of tabs, so a slightly modified ruleset needs to be used in order to fit with our current standards. Thankfully, PHPCS allows for modification of its ruleset, either through providing a `--standard=/setup/phpcs-ruleset.xml` switch to its command line parameters, or more conveniently, it searches for a `phpcs.xml` file in the folder of the code being checked, and every parent folder thereof. It is then recommended that the `phpcs.xml` file from the `/setup` folder is included in plugin projects. For reference, there are other ruleset files within the `/setup` driectory as well, with additional suffixes based on their deviations from the standard.
 
 ## Further Considerations
 
@@ -170,10 +166,10 @@ Workspace could just be renamed when the box is destroyed, instead of deleting i
 Listed here are all the parts you need to know about your new Vagrant environment and Craft installation.
 
 ```
-/.vagrant - Temporary working directory for Vagrant providers, stores configuration information, keys, etc. Generated and managed by Vagrant. Don't delete this if you have an active virtual machine tied to this directory.
+/.vagrant - Temporary working folder for Vagrant providers, stores configuration information, keys, etc. Generated and managed by Vagrant. Don't delete this if you have an active virtual machine tied to this folder.
 	/.vagrant/machines/default/virtualbox/private_key - Likely the only file here you will need to worry about. The default location of the vagrant user's SSH key used for tunneling from host to guest.
 /setup - Storage for scripts and utility files used by Vagrant automatically and available for use manually to vacilitate development. All scripts are documented.
-	craft-reset.sh - Deletes any existing craft environment/database and creates a new one from scratch, faster than restroying and recreating a whole box. THIS DELETES THE ENTIRE WORKSPACE DIRECTORY.
+	craft-reset.sh - Deletes any existing craft environment/database and creates a new one from scratch, faster than restroying and recreating a whole box. THIS DELETES THE ENTIRE WORKSPACE FOLDER.
 	httpd.conf - Default Apache configuration used during provisioning.
 	init.sh - Main Vagrant provisioning script.
 	php.ini - PHP configuration used during provisioning.
@@ -189,8 +185,8 @@ Listed here are all the parts you need to know about your new Vagrant environmen
 	/config - Craft configuration.
 	/html - The public web root folder.
 	/modules - Custom YII modules for Craft.
-	/storage - Data storage directory for Craft and its plugins.
-	/templates - Craft template directory.
+	/storage - Data storage folder for Craft and its plugins.
+	/templates - Craft template folder.
 	/vendor - Installed composer packages.
 	.env - Environment configuration, not committed, this is where credentials and the like go.
 	composer.json - Composer configuration for the entire Craft package, including installed plugins.
