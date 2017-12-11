@@ -63,12 +63,20 @@ To quickly SSH into the box, for example to run various Composer commands, run `
 Alternatively, if you want to use a custom SSH client (or for SSH tunneling required below), you will need to use the VM's configured private key, usually located in the Vagrant environment under `./.vagrant/machines/default/virtualbox/private_key`. Using `vagrant` as the username, and `192.168.33.10` as the address, you can then SSH in to the vagrant machine. For example:
 
 ```bash
+# SSH directly into the virtual machine.
 ssh vagrant@192.168.33.10 -i ./.vagrant/machines/default/virtualbox/private_key
 ```
 
 > In case the key isn't at the above location, you can run `vagrant ssh-config` and look for the `IdentityFile` path.
 
 > Remember that some tools in Windows (filezilla, heidisql, etc.) will use PuTTY formatted keys (`.ppk`) which will need to be manually converted with the [puttygen](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) tool.
+
+Keep in mind that every time a new vagrant machine is created, its identification and SSH keys will be updated, so relying on tools that need to have further modifications made to keys is not recommended. If you `destroy` and then create a new box, you will need to run the following to clear the stored identity of the virtual machine, otherwise further SSH operations will fail because of the mismatched cached identity.
+
+```bash
+# Delete the cached host identity information.
+ssh-keygen -R <host>
+```
 
 ### Database
 
@@ -86,7 +94,8 @@ Generally these repositories contain the data mapped to the web root, so you wou
 
 > For convenience, and for reference if setting up automation, there is a script in the `/setup` folder called `site-setup.sh` that assists with this process. Simply call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment folder on the host, passing it the repository path.
 
-```
+```bash
+# Set up a site from a repository automatically.
 ./../setup/site-setup.sh git@github.com:user/repository
 ```
 
@@ -97,6 +106,7 @@ Craft plugins are Composer packages, which come with some setup and installation
 > To skip all the details, and get to working immediately, there is a script in the `/setup` folder called `plugin-install.sh` that will get you up and running with a plugin repository. Simply call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment filder on the host, passing it the package name and the repository path. **This method has some caveats outlined further below, though for general adjustments and quick testing, this can get you working without having to know all the details**.
 
 ```bash
+# Install a plugin from a repository automatically.
 ./../setup/plugin-install.sh git@github.com:user/repository
 ```
 
@@ -141,8 +151,9 @@ There's no one solution that really fulfills requirements of quick in-place edit
 The provided `plugin-install.sh` script attempts to get the best it can from both methods by checking out the plugin from a dummy git repository, and then repointing the upstream branch of the installed package to the original repository. This way active development can be done on the package, but it can also be updated as needed in case of changes being made to composer files or scripts being added. To further assist with individual plugin handling, there are also `plugin-update.sh` and `plugin-remove.sh` scripts that can be run the same way, which will update composer's internal references to package behavior and version numbers, or delete the plugin outright, respectively.
 
 ```bash
+# Force update cached composer information about a plugin.
 ./setup/plugin-update.sh package/name
-# or
+# Uninstall and completely remove a plugin.
 ./setup/plugin-remove.sh package/name
 ```
 
@@ -153,6 +164,8 @@ The provided `plugin-install.sh` script attempts to get the best it can from bot
 To run the tool on some code, simply run the following on the guest:
 
 ```bash
+# Run this only once on a guest to set up PHP development tools.
+/setup/php-dev-init.sh
 # Run PHPCS on code to see style warnings and errors.
 phpcs /path/to/code
 # Run PHPCBF on code to automatically fix style errors where possible.
