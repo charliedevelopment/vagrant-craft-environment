@@ -2,6 +2,16 @@
 
 ## Installation
 
+### Installing Git
+
+On Windows: https://git-scm.com/download/win
+
+It is recommended to check out and commit Unix-style line endings on any platform.  The shell scripts used in the project will not function properly if checked out with Windows line endings. Make sure to install the command line tools as well, and not just the GUI.
+
+### Setting up Git
+
+https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/
+
 ### Install Vagrant
 
 If using Windows 7, it's recommended to get 1.9.6 to avoid incompatibility issues with older versions of powershell
