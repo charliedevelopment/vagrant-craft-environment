@@ -4,13 +4,15 @@
 
 ### Installing Git
 
-On Windows: https://git-scm.com/download/win
+On Windows, in order to use the automated scripts contained within this repository, you will need to install [git command line tools](https://git-scm.com/download/win).
 
-It is recommended to check out and commit Unix-style line endings on any platform.  The shell scripts used in the project will not function properly if checked out with Windows line endings. Make sure to install the command line tools as well, and not just the GUI.
+> It is recommended to check out and commit Unix-style line endings regardless of platform. See [GitHub's documentation on line endings](https://help.github.com/articles/dealing-with-line-endings/) in order to set your `autocrlf` setting to `input`. The shell scripts used in the project will not function properly if checked out with Windows line endings, and most text editors will be able to properly understand the Unix-style line endings.
 
 ### Setting up Git
 
-https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/
+Using git from the command line will require you to have tools set up to access the repository with a key. Refer to [GitHub's documentation on ssh keys](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/) to set up your client.
+
+> Remember, any commit made with a git client will tie a name and email with the commit, and this name/email is set _per client_ and not associated/validated with any underlying account on GitHub or otherwise. Make sure you set your email up according to your client's configuration, or see [GitHub's documentation on updating this setting](https://help.github.com/articles/setting-your-commit-email-address-in-git/) for more details. In the case of GitHub specifically, if you want to keep your email private, look for the `@users.noreply.github.com` email address in your [GitHub email settings page](https://github.com/settings/emails) and configure your client to use that.
 
 ### Install Vagrant
 
