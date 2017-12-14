@@ -47,6 +47,8 @@ sudo yum -y install php-zip
 sudo yum -y install php-dom
 # Install PHP mbstring extension, for craft
 sudo yum -y install php-mbstring
+# Install PHP internationalization extension, for craft
+sudo yum -y install php-intl
 # Install Apache PHP module
 sudo yum -y install mod_php
 
