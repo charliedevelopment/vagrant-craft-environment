@@ -46,7 +46,7 @@ sudo sed -i "/my-module/d" /var/www/config/app.php
 # the class that gets copied over. In real production environments it won't matter, but in the case of
 # Vagrant virtualization, Yii's mutex handling causes issues for Craft.
 mutexmd5="$(md5sum /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php)"
-if [[ $mutexmd5 == "00a2c7f368a25ca533f925ae350732a9  /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php" ]]; then
+if [[ $mutexmd5 == "c4f324714ee6b0cbbd30c14bbfeb8831  /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php" ]]; then
 	rm -f /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php
 	cp /setup/FileMutex.php /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php
 else
