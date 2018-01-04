@@ -98,7 +98,7 @@ Generally these repositories contain the data mapped to the web root, so you wou
 
 ```bash
 # Set up a site from a repository automatically.
-./../setup/site-setup.sh git@github.com:user/repository
+./setup/site-setup.sh git@github.com:user/repository
 ```
 
 ## Plugin Development
@@ -109,7 +109,7 @@ Craft plugins are Composer packages, which come with some setup and installation
 
 ```bash
 # Install a plugin from a repository automatically.
-./../setup/plugin-install.sh git@github.com:user/repository
+./setup/plugin-install.sh git@github.com:user/repository
 ```
 
 ---
