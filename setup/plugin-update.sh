@@ -13,10 +13,14 @@ cd /var/www
 composer config repositories.$1 git /var/www/.dev/.git
 # Make sure the files are writeable in the case of things getting deleted during the update.
 chmod -R u+w /var/www/vendor/$1
+# Update config to force the most recent version.
+composer config prefer-stable false
 # Update the plugin.
 composer update $1
 # Remove the plugin repository.
 composer config repositories.$1 --unset
+# Return the config to retrieving stable repositories if possible.
+composer config prefer-stable true
 EOF
 # Remove the temporary folder.
 rm -rf workspace/.dev

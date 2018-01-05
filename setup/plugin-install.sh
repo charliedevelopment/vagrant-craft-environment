@@ -16,14 +16,16 @@ cd /var/www
 composer config repositories.$package_name git /var/www/.dev/.git
 # Update config to get development repositories.
 composer config minimum-stability dev
-# Update config to get stable repositories if possible.
-composer config prefer-stable true
+# Update config to force the most recent version.
+composer config prefer-stable false
 # Require the plugin, should pull from the temporary repository.
 composer require $package_name
 # Install the plugin with Craft.
 ./craft install/plugin $plugin_handle
 # Remove the plugin repository.
 composer config repositories.$package_name --unset
+# Return the config to retrieving stable repositories if possible.
+composer config prefer-stable true
 EOF
 # Remove the temporary folder.
 rm -rf workspace/.dev
