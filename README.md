@@ -186,11 +186,21 @@ Keep in mind the PSR-2 style requires spaces instead of tabs, so a slightly modi
 
 ## Further Considerations
 
-Apache and php configurations available before provisioning (not copied every time, though I suppose they could be...)
+### Configuration Files
 
-All shell scripts and the Vagrantfile itself are fully documented for reference.
+Apache and PHP configurations are copied on initial provisioning, with some configuration defaults set to meet Craft's requirements. In addition, there is a PostgreSQL configuration that is included and copies on first activation of PostgreSQL in an instance.
 
-Workspace could just be renamed when the box is destroyed, instead of deleting it.
+#### FileMutex.php
+
+Yii relies on file-based locking in order to prevent multiple PHP scripts from executing the same code at the same time. Unfortunately, while Yii correctly guesses that it is running on a Unix-based system, it uses Unix-based file locking, which will throw errors when used in a Windows host (with the virtual box file system used as the workspace). To prevent these issues, a custom-modified mutex file has been created solely for development within the virtual environment that fixes the issue. It is copied on initial setup of Craft, if it detects that the copy being replaced matches the most recent known copy. Otherwise, an error will be displayed during Craft install, and the file will have to be manually updated and copied.
+
+### Script Documentation
+
+All shell scripts and the Vagrantfile itself are fully documented for reference. It should be relatively self-explanatory what kinds of setup goes into each stage of the setup process.
+
+### Preserving Workspace
+
+Because the workspace is deleted upon reset of craft and initialization of a new Vagrant instance, if the Vagrant instance is destroyed, it is recommended to recover any necessary files before starting a new instance in the same directory.
 
 ## Contents
 
@@ -201,17 +211,22 @@ Listed here are all the parts you need to know about your new Vagrant environmen
 	/.vagrant/machines/default/virtualbox/private_key - Likely the only file here you will need to worry about. The default location of the vagrant user's SSH key used for tunneling from host to guest.
 /setup - Storage for scripts and utility files used by Vagrant automatically and available for use manually to vacilitate development. All scripts are documented.
 	craft-reset.sh - Deletes any existing craft environment/database and creates a new one from scratch, faster than restroying and recreating a whole box. THIS DELETES THE ENTIRE WORKSPACE FOLDER.
+	FileMutex.php - See the section above in [Further Considerations](#further-considerations)
 	httpd.conf - Default Apache configuration used during provisioning.
 	init.sh - Main Vagrant provisioning script.
+	pg_hba.conf - PostgreSQL authentication configuration, allows user accounts to login with plain username/password combinations, instead of having to be tied to OS users.
 	php.ini - PHP configuration used during provisioning.
 	phpcs.xml - Recommended PHP CodeSniffer ruleset, enforcing tabs versus spaces.
-	phpcs-samelinebraces.xml - A PHP CodeSniffer ruleset that enforces tabs and same-line braces.
-	php-dev-init.sh - Installs and sets up PHP development tools on the guest box.
+	phpcs-documentation.xml - A PHP CodeSniffer ruleset that enforces documentation blocks.
+	phpcs-samelinebraces.xml - A PHP CodeSniffer ruleset that enforces same-line braces.
+	php-dev-init.sh - Installs and sets up PHP development tools on the guest box. Good for plugin development.
+	plugin-install.sh - Installs Composer dependencies from a git repository.
 	plugin-remove.sh - Uninstalls Composer dependencies.
-	plugin-require.sh - Installs Composer dependencies.
 	plugin-update.sh - Attempts to update a Composer dependency from the original repository.
 	site-setup.sh - Clones a site repository over an existing fresh craft install.
 	start.sh - Vagrant post-startup script.
+	use-mysql.sh - Destroys the current Craft install and creates a new one using MySQL.
+	use-postgresql.sh -  Destroys the current Craft install and creates a new one using PostgreSQL.
 /workspace - Synchronized to the virtual box's /var/www folder, used as a workspace for Craft sites and plugins. THIS IS DELETED ON VAGRANT DESTROY AND CRAFT RESET.
 	/config - Craft configuration.
 	/html - The public web root folder.
