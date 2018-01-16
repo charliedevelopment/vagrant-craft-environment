@@ -35,7 +35,7 @@ sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.
 sudo yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 sudo yum-config-manager --enable remi-php71
 sudo yum -y update
-# Install PHP mysql extension, for general use
+# Install PHP MySQL extension, for general use
 sudo yum -y install php-mysql
 # Install PHP ImageMagick extension, for craft
 sudo yum -y install php-imagick

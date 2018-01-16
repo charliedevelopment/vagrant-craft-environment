@@ -4,10 +4,6 @@
 
 ### Set up Craft 3
 
-# Drop any existing craft database.
-mysql -u root -prootpassword -e "DROP DATABASE IF EXISTS craft;"
-# Create a database to use for craft.
-mysql -u root -prootpassword -e "CREATE DATABASE craft;"
 # Make sure everything is writable, so that it may be deleted
 sudo chmod -R u+w /var/www/
 # Delete all existing files
@@ -21,10 +17,25 @@ sudo chown -R apache:apache /var/www/
 # Update configuration file
 sudo sed -i 's/DB_PASSWORD=""/DB_PASSWORD="rootpassword"/' /var/www/.env
 sudo sed -i 's/DB_DATABASE=""/DB_DATABASE="craft"/' /var/www/.env
+# Database-specific setup
+systemctl status mariadb
+if [[ $? == 0 ]]; then
+	# Drop and recreate the craft database (MySQL)
+	mysql -u root -prootpassword -e "DROP DATABASE IF EXISTS craft;"
+	mysql -u root -prootpassword -e "CREATE DATABASE craft;"
+	# Make sure Craft is using the correct driver
+	sudo sed -i 's/DB_DRIVER="pgsql"/DB_DRIVER="mysql"/' /var/www/.env
+else
+	# Drop and recreate the craft database (PostgreSQL)
+	PGPASSWORD=rootpassword psql postgres root -c "DROP DATABASE IF EXISTS craft;"
+	PGPASSWORD=rootpassword psql postgres root -c "CREATE DATABASE craft;"
+	# Make sure Craft is using the correct driver
+	sudo sed -i 's/DB_DRIVER="mysql"/DB_DRIVER="pgsql"/' /var/www/.env
+fi
 # Keep in mind, craft setup, which can be done via the CLI, doesn't have command line options, and only makes the above adjustments anyway
 # Run craft install via the CLI
 sudo php /var/www/craft install --username="admin" --email="vagrant@localhost.localdomain" --password="craftdev" --siteName="Craft Dev" --siteUrl="http://192.168.33.10/" --language="en_us"
-# New files have been added with the install script, get ownership of those, too.
+# New files have been added with the install script, get ownership of those, too
 sudo chown -R apache:apache /var/www/
 
 ### Clean up some residual craft things, to keep any workspace-level git repositories clean

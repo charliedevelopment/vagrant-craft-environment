@@ -161,6 +161,10 @@ The provided `plugin-install.sh` script attempts to get the best it can from bot
 
 > Keep in mind, if you have made in-place edits to a plugin manually installed through git (using the `plugin-install.sh` script) it is possible that composer will fail to uninstall the plugin because of changes that have not been committed. Even if you have committed the changes normally to the `origin` branch, it will still complain about the temporary, dummy `composer` branch. In order to avoid this issue entirely, simply delete the `.git` folder of the plugin, and the plugin can be removed normally.
 
+## Database Switching
+
+Craft CMS supports both MySQL and PostgreSQL. To assist with testing, some scripts are provided to switch the Vagrant guest between MySQL and PostgreSQL for the Craft installation. **Keep in mind that when switching from one database to another the Craft installation is reset, _meaning all data in the current installation, (sites, plugins, database) will be lost_, because converting data from one database to another would otherwise be a manual process**. These scripts are `use-posgresql.sh` and `use-mysql.sh`. They will provide a confirmation before making changes, and will raise a notification if the requested database is already currently active.
+
 ## Code Guidelines/Standards
 
 [Craft recommends following these coding standards](https://github.com/craftcms/docs/blob/master/en/coding-guidelines.md). These guidelines note following the PSR-1 coding standard & PRS-2 coding style. To help facilitate code consistency, it is recommended to use the PHP CodeSniffer tool, which will find and can automatically fix inconsistencies with these rules. For convenience, there is a `php-dev-init.sh` script provided that can be run within the guest in order to install and set up the tool quickly. It is recommended to run this before every commit, to ensure code consistency.
@@ -211,7 +215,7 @@ Listed here are all the parts you need to know about your new Vagrant environmen
 /workspace - Synchronized to the virtual box's /var/www folder, used as a workspace for Craft sites and plugins. THIS IS DELETED ON VAGRANT DESTROY AND CRAFT RESET.
 	/config - Craft configuration.
 	/html - The public web root folder.
-	/modules - Custom YII modules for Craft.
+	/modules - Custom Yii modules for Craft.
 	/storage - Data storage folder for Craft and its plugins.
 	/templates - Craft template folder.
 	/vendor - Installed composer packages.
