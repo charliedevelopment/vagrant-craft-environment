@@ -1,5 +1,11 @@
 # Vagrant Development Environment for Craft 3
 
+## Foreward
+
+This documentation is meant for a rough, quick reference of all the parts needed to get up and running with Craft 3 in a local Vagrant environment. The tools involved (git, Vagrant, VirtualBox, etc.) are not covered in great detail. This guide is intended to provide a starting point, and give some additional insight or considerations that may not be readily apparent about the whole process.
+
+While intended mainly for internal use within [Charlie Development](http://charliedev.com/) some of the resources and script documentation can apply more generally to Craft 3 or virtualized local development as a whole. It is intended that the recommendations and scripts provided herein are tuned for ease of use and speed of development. The benefits of this approach are sometimes hard to quantify, especially when compared to the speed of a more classic approach of download-edit-upload in a centralized environment.
+
 ## Installation
 
 ### Installing Git
@@ -16,14 +22,14 @@ Using git from the command line will require you to have tools set up to access 
 
 ### Install Vagrant
 
-If using Windows 7, it's recommended to get 1.9.6 to avoid incompatibility issues with older versions of powershell
+If using Windows, it's recommended to get 1.9.6 to avoid incompatibility issues with older versions of powershell. This may not entirely be the case any more, but just in case a newer version doesn't work, 1.9.6 is a safe version to roll back to.
 
 Vagrant can be found here: https://www.vagrantup.com/downloads.html
 
 ### Install VirtualBox
 
-Vagrant is not compatible with VirtualBox 5.2 or later
-	
+Vagrant (as of writing) is not compatible with VirtualBox 5.2 or later, so it's best to use the latest 5.1 release.
+
 VirtualBox can be found here: https://www.virtualbox.org/wiki/Downloads
 
 ### Vagrant Setup
@@ -42,7 +48,7 @@ Open a shell/prompt and navigate to the Vagrant environment folder. Run `vagrant
 
 That's all you need to do, once finished your Craft installation will be ready to use at [192.168.33.10](http://192.168.33.10/admin). The default Craft username is **admin** and the password is **craftdev**.
 
-> Because Craft 3 is still under active development, it is possible that the current version installed through Github does not function, if this is the case, you will need to either report an issue and wait, or manually make adjustments to the Composer install script in order to pull a specific tagged version.
+> Because Craft 3 is still under active development, it is possible that the current version installed through GitHub does not function, if this is the case, you will need to either report an issue and wait, or manually make adjustments to the Composer install script in order to pull a specific tagged version.
 
 ## VM Usage
 
@@ -73,7 +79,7 @@ ssh vagrant@192.168.33.10 -i ./.vagrant/machines/default/virtualbox/private_key
 
 > Remember that some tools in Windows (filezilla, heidisql, etc.) will use PuTTY formatted keys (`.ppk`) which will need to be manually converted with the [puttygen](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) tool.
 
-Keep in mind that every time a new vagrant machine is created, its identification and SSH keys will be updated, so relying on tools that need to have further modifications made to keys is not recommended. If you `destroy` and then create a new box, you will need to run the following to clear the stored identity of the virtual machine, otherwise further SSH operations will fail because of the mismatched cached identity.
+Keep in mind that every time a new Vagrant machine is created, its identification and SSH keys will be updated. Tools that need to use modified versions of openssh keys (such as PuTTY) should be avoided if possible, as key conversion/copying isn't handled automatically. If you `destroy` and then create a new box, some tools may need to be updated with new identities before you can connect to the machine, as they may cache the identity files of the old instance. In the case of regular command line SSH tools, you can run the following to clear the stored identity:
 
 ```bash
 # Delete the cached host identity information.
@@ -226,7 +232,7 @@ Listed here are all the parts you need to know about your new Vagrant environmen
 	site-setup.sh - Clones a site repository over an existing fresh craft install.
 	start.sh - Vagrant post-startup script.
 	use-mysql.sh - Destroys the current Craft install and creates a new one using MySQL.
-	use-postgresql.sh -  Destroys the current Craft install and creates a new one using PostgreSQL.
+	use-postgresql.sh - Destroys the current Craft install and creates a new one using PostgreSQL.
 /workspace - Synchronized to the virtual box's /var/www folder, used as a workspace for Craft sites and plugins. THIS IS DELETED ON VAGRANT DESTROY AND CRAFT RESET.
 	/config - Craft configuration.
 	/html - The public web root folder.
