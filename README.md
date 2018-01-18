@@ -48,13 +48,19 @@ Open a shell/prompt and navigate to the Vagrant environment folder. Run `vagrant
 
 That's all you need to do, once finished your Craft installation will be ready to use at [192.168.33.10](http://192.168.33.10/admin). The default Craft username is **admin** and the password is **craftdev**.
 
-> Because Craft 3 is still under active development, it is possible that the current version installed through GitHub does not function, if this is the case, you will need to either report an issue and wait, or manually make adjustments to the Composer install script in order to pull a specific tagged version.
+Keep in mind that the initial install of craft (at least the release candidate versions) will not come with any default sections/fields/templates, and thus 404 on visiting anything but the control panel.
+
+> Because Craft 3 is still under active development, it is possible that the current version installed does not function, if this is the case, you will need to either report an issue and wait, or manually make adjustments to the Composer install script in order to pull a specific tagged version.
 
 ## VM Usage
 
 To shut down, restart, or completely delete the VM, use `vagrant halt`, `vagrant reload`, and `vagrant destroy`, respectively. **Do not use `reboot` via SSH to reboot the machine** as it will not remount shared folders.
 
 > If you want a quick way to reset Craft's database and workspace without destroying the Vagrant box and rebuilding it, while in the guest's terminal, you can run `/setup/craft-reset.sh`, which will drop the database, delete _everything_ from the web folder, and redownload/reinstall craft.
+
+### Web Access
+
+The virtual address for the vagrant machine is `192.168.33.10`, and thus visiting this address in a web browser on the same local machine will take you to the Craft installation. The web port is also forwarded through your local network on port 8081. Anyone else on your network can visit your local craft install by visiting your IP on this port (similar to [127.0.0.1:8081](http://127.0.0.1:8081/admin)).
 
 ### Files
 
