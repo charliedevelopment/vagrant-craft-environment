@@ -38,11 +38,15 @@ EOT
 					} else { // On any other control panel page, add some JS that will inject an additional display to the session expiration dialogues.
 						Craft::$app->getView()->registerJs(<<<'EOT'
 (function() {
+var added = false;
 if (Craft && Craft.cp && Craft.cp.authManager) {
 	var showLoginModal = Craft.AuthManager.prototype.showLoginModal;
 	Craft.AuthManager.prototype.showLoginModal = function() {
 		showLoginModal.apply(this, arguments);
-		this.loginModal.$container.find('.inputcontainer').after('<p class="centeralign"><code>User: admin&nbsp;&nbsp;|&nbsp;&nbsp;Pass: craftdev</code></p>');
+		if (!added) {
+			this.loginModal.$container.find('.inputcontainer').after('<p class="centeralign"><code>Pass: craftdev</code></p>');
+		}
+		added = true;
 	};
 }
 })();
