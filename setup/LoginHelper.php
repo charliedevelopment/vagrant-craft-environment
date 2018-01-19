@@ -26,14 +26,26 @@ class LoginHelper extends Module
 		if (Craft::$app->getRequest()->getIsCpRequest()) {
             Event::on(
 				View::class,
-				View::EVENT_BEFORE_RENDER_TEMPLATE,
+				View::EVENT_BEFORE_RENDER_PAGE_TEMPLATE,
 				function (TemplateEvent $event) {
 					if (isset(Craft::$app->requestedAction)
 						&& Craft::$app->requestedAction->id = 'login'
-						&& is_a(Craft::$app->requestedAction->controller, craft\controllers\UsersController::class))
-					{
-						Craft::$app->getView()->registerJs(<<<EOT
+						&& is_a(Craft::$app->requestedAction->controller, craft\controllers\UsersController::class)) { // On the login page specifically, register some JS that will show the default credentials.
+						Craft::$app->getView()->registerJs(<<<'EOT'
 $('#password-field').after('<p class="centeralign"><code>User: admin&nbsp;&nbsp;|&nbsp;&nbsp;Pass: craftdev</code></p>');
+EOT
+						);
+					} else { // On any other control panel page, add some JS that will inject an additional display to the session expiration dialogues.
+						Craft::$app->getView()->registerJs(<<<'EOT'
+(function() {
+if (Craft && Craft.cp && Craft.cp.authManager) {
+	var showLoginModal = Craft.AuthManager.prototype.showLoginModal;
+	Craft.AuthManager.prototype.showLoginModal = function() {
+		showLoginModal.apply(this, arguments);
+		this.loginModal.$container.find('.inputcontainer').after('<p class="centeralign"><code>User: admin&nbsp;&nbsp;|&nbsp;&nbsp;Pass: craftdev</code></p>');
+	};
+}
+})();
 EOT
 						);
 					}
