@@ -45,10 +45,12 @@ sudo rm -rf /var/www/LICENSE.md
 sudo rm -rf /var/www/README.md
 # Example environment file, as that should more or less be either filled out, or just referenced from the regular '.env' file; they are the same, after all
 sudo rm -rf /var/www/.env.example
-# Example craft module
+# Remove the example craft module
 sudo rm -rf /var/www/modules/Module.php
-# App config remove lines relating to example module
-sudo sed -i "/my-module/d" /var/www/config/app.php
+# Install the custom development module
+sudo cp /setup/LoginHelper.php /var/www/modules/LoginHelper.php
+# App config replace with development version, loading custom module (and not the example one)
+sudo cp /setup/app.php /var/www/config/app.php
 
 ### Some really crazy stuff
 
