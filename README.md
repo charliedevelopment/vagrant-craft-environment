@@ -72,7 +72,7 @@ There is an additional `/setup` folder on the guest that is synced from the `set
 
 ### SSH
 
-To quickly SSH into the box, for example to run various Composer commands, run `vagrant ssh`. At this point it's like any other remote linux machine.
+To quickly SSH into the box, for example to run various Composer commands, run `vagrant ssh`. At this point it's like any other remote environment.
 
 Alternatively, if you want to use a custom SSH client (or for SSH tunneling required below), you will need to use the VM's configured private key, usually located in the Vagrant environment under `./.vagrant/machines/default/virtualbox/private_key`. Using `vagrant` as the username, and `192.168.33.10` as the address, you can then SSH in to the vagrant machine. For example:
 
@@ -117,7 +117,7 @@ Generally these repositories contain the data mapped to the web root, so you wou
 
 Craft plugins are Composer packages, which come with some setup and installation requirements, and thus cannot simply be dropped in a folder to install them. Usually they can be installed from external repositories, but for development purposes this typical method is _very_ slow. There are some considerations to make in order facilitate a smooth development experience.
 
-> To skip all the details, and get to working immediately, there is a script in the `/setup` folder called `plugin-install.sh` that will get you up and running with a plugin repository. Simply call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment filder on the host, passing it the package name and the repository path. **This method has some caveats outlined further below, though for general adjustments and quick testing, this can get you working without having to know all the details**.
+> To skip all the details, and get to working immediately, there is a script in the `/setup` folder called `plugin-install.sh` that will get you up and running with a plugin repository. Simply call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment folder on the host, passing it the package name and the repository path. **This method has some caveats outlined further below, though for general adjustments and quick testing, this can get you working without having to know all the details**.
 
 ```bash
 # Install a plugin from a repository automatically.
@@ -194,7 +194,7 @@ phpcbf /path/to/code
 
 ### Customized Ruleset
 
-Keep in mind the PSR-2 style requires spaces instead of tabs, so a slightly modified ruleset needs to be used in order to fit with our current standards. Thankfully, PHPCS allows for modification of its ruleset, either through providing a `--standard=/setup/phpcs-ruleset.xml` switch to its command line parameters, or more conveniently, it searches for a `phpcs.xml` file in the folder of the code being checked, and every parent folder thereof. It is then recommended that the `phpcs.xml` file from the `/setup` folder is included in plugin projects. For reference, there are other ruleset files within the `/setup` driectory as well, with additional suffixes based on their deviations from the standard.
+Keep in mind the PSR-2 style requires spaces instead of tabs, so a slightly modified ruleset needs to be used in order to fit with our current standards. Thankfully, PHPCS allows for modification of its ruleset, either through providing a `--standard=/setup/phpcs-ruleset.xml` switch to its command line parameters, or more conveniently, it searches for a `phpcs.xml` file in the folder of the code being checked, and every parent folder thereof. It is then recommended that the `phpcs.xml` file from the `/setup` folder is included in plugin projects. For reference, there are other ruleset files within the `/setup` directory as well, with additional suffixes based on their deviations from the standard.
 
 ## Further Considerations
 
@@ -212,7 +212,7 @@ All shell scripts and the Vagrantfile itself are fully documented for reference.
 
 ### Preserving Workspace
 
-Because the workspace is deleted upon reset of craft and initialization of a new Vagrant instance, if the Vagrant instance is destroyed, it is recommended to recover any necessary files before starting a new instance in the same directory.
+Because the workspace is deleted upon reset of craft and initialization of a new Vagrant instance, if the Vagrant instance is destroyed, it is recommended to recover any necessary files before starting a new instance in the same folder.
 
 ## Contents
 
