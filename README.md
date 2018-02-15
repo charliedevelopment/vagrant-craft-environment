@@ -323,8 +323,11 @@ Listed here are all the parts you need to know about your new Vagrant environmen
 	app.php - Craft cms app configuration that force loads the LoginHelper module.
 	craft-reset.sh - Deletes any existing craft environment/database and creates a new one from scratch, faster than restroying and recreating a whole box. THIS DELETES THE ENTIRE WORKSPACE FOLDER.
 	FileMutex.php - See the section above in [Further Considerations](#further-considerations)
+	generate-ca-cert.sh - A reference script for generating a CA root SSL certificate.
+	generate-cert.sh - A reference script for generating an SSL certificate for HTTPS use on a local domain.
 	httpd.conf - Default Apache configuration used during provisioning.
 	init.sh - Main Vagrant provisioning script.
+	install-cert.sh - Installs an SSL certificate for HTTPS use.
 	LoginHelper.php - Yii module automatically installed to extend the login page with some ease of access features for development.
 	pg_hba.conf - PostgreSQL authentication configuration, allows user accounts to login with plain username/password combinations, instead of having to be tied to OS users.
 	php.ini - PHP configuration used during provisioning.
