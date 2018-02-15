@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
 
 	# Mount the workspace folder via the VirtualBox sync system.
 	# This will actively keep the contents of the filesystem in sync.
-	config.vm.synced_folder "workspace", "/var/www", create: true, type: "virtualbox", group: 48, owner: 48, mount_options: ["umask=0002"]
+	config.vm.synced_folder "workspace", "/var/www", create: true, type: "virtualbox", group: 48, owner: 48, mount_options: ["dmode=775,fmode=774,umask=0002"]
 	
 	# Ideally the NFS would be used, which is supported under Windows with the `vagrant-winnfsd` plugin.
 	# But for some reason PHP pages would either not function at all, or would send data but never close the connection.
