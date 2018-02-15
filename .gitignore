@@ -1,2 +1,10 @@
+# Vagrant VM folder.
 .vagrant
+
+# Shared workspace folder.
 workspace
+
+# Prevent committing any kind of key/certificate from SSL scripts.
+setup/*.key
+setup/*.crt
+setup/*.csr
