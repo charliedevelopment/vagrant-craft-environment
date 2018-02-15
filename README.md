@@ -106,7 +106,7 @@ Working with the contents of a Craft site that are synced to a git repository is
 
 Generally these repositories contain the data mapped to the web root, so you would normally clone the repository into the Craft install, but you can't clone a git repository to a non-empty folder. An easy solution would be to clone to another location, then copy the files in.
 
-> For convenience, and for reference if setting up automation, there is a script in the `/setup` folder called `site-setup.sh` that assists with this process. Simply call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment folder on the host, passing it the repository path.
+> For convenience, and for reference if setting up automation, there is a script in the `/setup` folder called `site-setup.sh` that assists with this process. Call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment folder on the host, passing it the repository path.
 
 ```bash
 # Set up a site from a repository automatically.
@@ -115,9 +115,9 @@ Generally these repositories contain the data mapped to the web root, so you wou
 
 ## Plugin Development
 
-Craft plugins are Composer packages, which come with some setup and installation requirements, and thus cannot simply be dropped in a folder to install them. Usually they can be installed from external repositories, but for development purposes this typical method is _very_ slow. There are some considerations to make in order facilitate a smooth development experience.
+Craft plugins are Composer packages, which come with some setup and installation requirements, and thus cannot just be dropped in a folder to install them. Usually they can be installed from external repositories, but for development purposes this typical method is _very_ slow. There are some considerations to make in order facilitate a smooth development experience.
 
-> To skip all the details, and get to working immediately, there is a script in the `/setup` folder called `plugin-install.sh` that will get you up and running with a plugin repository. Simply call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment folder on the host, passing it the package name and the repository path. **This method has some caveats outlined further below, though for general adjustments and quick testing, this can get you working without having to know all the details**.
+> To skip all the details, and get to working immediately, there is a script in the `/setup` folder called `plugin-install.sh` that will get you up and running with a plugin repository. Call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment folder on the host, passing it the package name and the repository path. **This method has some caveats outlined further below, though for general adjustments and quick testing, this can get you working without having to know all the details**.
 
 ```bash
 # Install a plugin from a repository automatically.
@@ -128,7 +128,7 @@ Craft plugins are Composer packages, which come with some setup and installation
 
 Typically, when running `composer require package/name`, composer checks [Packagist](https://packagist.org/) for the specified package. This in turn means that developing a package would require making changes to a package in a local repository, publishing the changes to Packagist, waiting for changes to become available, and then running `composer update` for each change, which costs a significant amount of time for each development change.
 
-Composer does provide a mechanism to allow packages to be retrieved through other means. For a simple package, we might place it in a temporary location, and then add, to our `composer.json` an entry pointing to check the given path for packages when asked to install or update new ones.
+Composer does provide a mechanism to allow packages to be retrieved through other means. For a simple package, you might place it in a temporary location, and then add, to our `composer.json` an entry pointing to check the given path for packages when asked to install or update new ones.
 
 ```json
 "repositories": [
@@ -139,7 +139,7 @@ Composer does provide a mechanism to allow packages to be retrieved through othe
 ],
 ```
 
-Normally this would symlink the given path to the `/vendor` folder where Composer packages are installed, in addition to making the appropriate changes to the package manifests, autoloaders, and `composer.lock` files. **Keep in mind, doing this within VirtualBox's sync filesystem won't use symlinking, and instead copies the files**. This process takes us a step further, allowing our non-public package to be installed to Composer, where we can then make edits to the underlying files in the `/vendor` folder.
+Normally this would symlink the given path to the `/vendor` folder where Composer packages are installed, in addition to making the appropriate changes to the package manifests, autoloaders, and `composer.lock` files. **Keep in mind, doing this within VirtualBox's sync filesystem won't use symlinking, and instead copies the files**. This process takes us a step further, allowing our non-public package to be installed to Composer, where you can then make edits to the underlying files in the `/vendor` folder.
 
 > Keep in mind that while this method may be fairly direct, it has limitations. Updates made directly to packages in the `/vendor` folder aren't picked up by `composer install` and `composer update` commands, meaning changes to version numbers and package information won't be reflected. In the case of Craft plugins, there are even more internal functions of Craft that are run on plugin install/uninstall that may not function properly on in-place edits (notice how plugins have package types of `craft-plugin` and not `library`).
 
@@ -171,7 +171,7 @@ The provided `plugin-install.sh` script attempts to get the best it can from bot
 ./setup/plugin-remove.sh package/name
 ```
 
-> Keep in mind, if you have made in-place edits to a plugin manually installed through git (using the `plugin-install.sh` script) it is possible that composer will fail to uninstall the plugin because of changes that have not been committed. Even if you have committed the changes normally to the `origin` branch, it will still complain about the temporary, dummy `composer` branch. In order to avoid this issue entirely, simply delete the `.git` folder of the plugin, and the plugin can be removed normally.
+> Keep in mind, if you have made in-place edits to a plugin manually installed through git (using the `plugin-install.sh` script) it is possible that composer will fail to uninstall the plugin because of changes that have not been committed. Even if you have committed the changes normally to the `origin` branch, it will still complain about the temporary, dummy `composer` branch. In order to avoid this issue entirely, delete the `.git` folder of the plugin, and the plugin can be removed normally.
 
 ## Database Switching
 
@@ -181,7 +181,7 @@ Craft CMS supports both MySQL and PostgreSQL. To assist with testing, some scrip
 
 [Craft recommends following these coding standards](https://github.com/craftcms/docs/blob/master/en/coding-guidelines.md). These guidelines note following the PSR-1 coding standard & PRS-2 coding style. To help facilitate code consistency, it is recommended to use the PHP CodeSniffer tool, which will find and can automatically fix inconsistencies with these rules. For convenience, there is a `php-dev-init.sh` script provided that can be run within the guest in order to install and set up the tool quickly. It is recommended to run this before every commit, to ensure code consistency.
 
-To run the tool on some code, simply run the following on the guest:
+To run the tool on some code, run the following on the guest:
 
 ```bash
 # Run this only once on a guest to set up PHP development tools.
@@ -195,6 +195,104 @@ phpcbf /path/to/code
 ### Customized Ruleset
 
 Keep in mind the PSR-2 style requires spaces instead of tabs, so a slightly modified ruleset needs to be used in order to fit with our current standards. Thankfully, PHPCS allows for modification of its ruleset, either through providing a `--standard=/setup/phpcs-ruleset.xml` switch to its command line parameters, or more conveniently, it searches for a `phpcs.xml` file in the folder of the code being checked, and every parent folder thereof. It is then recommended that the `phpcs.xml` file from the `/setup` folder is included in plugin projects. For reference, there are other ruleset files within the `/setup` directory as well, with additional suffixes based on their deviations from the standard.
+
+## HTTPS Configuration
+
+Providing SSL certificates to use HTTPS for local development is a multi-step process with a few manual parts. Thankfully, if handled correctly, the majority of the manual process is a one-time setup.
+
+In order to use SSL to reach HTTPS websites, the website must have a valid SSL certificate. In addition, browsers require certificates to be issued from a Certificate Authority (CA) that they trust, or else they will display a warning/error to the user, in an attempt to prevent Man in the Middle and Phishing attacks.
+
+Being as it isn't possible to receive certificates for local development, one might choose to add exceptions for each individual site. This method is also cumbersome as the means of doing so can vary from each OS and browser, and having to replace a certificate with a new one if a development environment is recreated can introduce errors unexpectedly and takes additional time to manage manually.
+
+Instead it is recommended to create a certificate locally for your machine and trust that certificate alone. Then, at any point, a new certificate can be generated signed by that local one, and it will simply be trusted by association without any further manual exception adding. In addition, with the manual steps out of the way, new certificate generation can be handled (mostly) automatically.
+
+> This part of the readme is meant as a set of suggested guidelines and not a de-facto approach to this problem. It is likely any given environment might require a more tailored solution. This guide does not cover the finer details or security considerations of the following sections. It is best to have an underlying understanding of the tools involved before working with certificates manually.
+
+### Creating a CA Certificate
+
+Generating a CA certificate comes in two parts, creating a private key to use, and generating the certificate from the key. Creating a key is fairly simple, and can be done with the following shell command:
+
+```bash
+openssl genrsa -out ca-dev.key 4096
+```
+
+Then, using a pre-built configuration file (`ca-config.conf`), a certificate can be generated from this key:
+
+```bash
+openssl req -new -x509 -config ca-config.conf -sha256 -key ca-dev.key -out ca-dev.crt
+```
+
+It is important to note the following parts of the configuration file:
+
+- Under the `ca_default` section, there are some files specified to be read from for certain parts of the process. If these need to be stored in a different location, it is important they are updated here.
+- The `unique_subject` option is set to `no`. Signing certificates will track signatures made in the database file configured earlier. If this option is set to true, then errors will occur if a certificate's subject line is reused, which may not be preferred for volatile development environments.
+- The `copy_extensions` option is set to `copy`. This means any x509 extensions (such as `subjectAltName`) that are provided with signing requests will be automatically copied. For a real CA this would require careful review of extensions provided with each request, but in a local environment, this is not a problem.
+- While the identification information is set to some plain defaults, with "Local Development CA" as an organization name, it may be preferred to update this with something more recognizeable per your own situation.
+
+After this is done, some additional files will need to be created in order to properly sign certificates. These are the signed certificate database, and the serial number storage file.
+
+```bash
+touch ca-db.txt
+echo '01' > ca-serial.txt
+```
+
+After this process is finished, keep the key, certificate, configuration, db, and serial files all in a safe place for future reference. You will refer back to these whenever you want to create a new certificate for a development environment.
+
+> The steps outlined above are contained within the `generate-ca-cert.sh` script for additional reference. It is not recommended to be used outright without first moving it to a more permanent location and checking on the configuration. If it is used, all of its generated files must be moved to a permanent location for later use.
+
+### Trusting a CA Certificate
+
+As long as the CA certificate is reused for each signing instance, this will be the last large part of the manual process. Trusting the root CA varies depending on the OS and browser being used.
+
+#### Windows (General, IE, Chrome)
+
+On Windows, Chrome and IE refer to Windows' built in certificate store. This can be accessed by running `certmgr.msc` and importing the certificate to the `Trusted Root Certification Authorities` section.
+
+#### Windows (Firefox)
+
+Firefox maintains its own internal list of trusted certificates, which can be managed through the `Settings -> Privacy & Security -> View Certificates` panel.
+
+### Creating and Signing a Domain Certificate
+
+Similar to creating a CA certificate above, a private key must first be generated for the server, which can be done with the following:
+
+```bash
+openssl genrsa -out site-dev.key 4096
+```
+
+With the key generated, a Certificate Signing Request (CSR) can be created from information regarding the domain. This can be done by providing the key and a configuration file through the following command:
+
+```bash
+openssl req -new -sha256 -nodes -key site-dev.key -out site-dev.csr -config temp-config.conf
+```
+
+For convenience, an example configuration file is provided as `site-config.conf` that can be copied and modified to suit the domain's needs. If using the provided file directly, every instance of `localhost.localdomain` should be replaced with the domain you will use for the development site.
+
+Finally, to sign the certificate, you need the CA configuration from earlier, as well as all associated files still in their appropriate locatons as defined in said CA configuration. Using this configuration and the CSR generated in the previous command, a new certificate can be generated for the local development site:
+
+```bash
+openssl ca -batch -config ca-config.conf -policy signing_policy -extensions signing_req -out site-dev.crt -infiles site-dev.csr
+```
+
+Now you have a certificate signed by the local CA certificate that you trusted earlier, and thus is automatically trusted without further browser or OS configuration.
+
+> The steps outlined above are contained within the `generate-cert.sh` script, with the added convenience of being able to provide the domain for automatic replacement, and the path to the CA configuration file.
+
+```bash
+# Generate and sign an SSL certificate for the given domain using the provided config.
+./setup/generate-cert.sh test.dev /path/to/ca.conf
+```
+
+### Using a Domain Certificate
+
+The provided `install-cert.sh` script can handle all of the setup procedure for installing an SSL certificate for use on the Apache server. Call the script with the domain, key path, and certificate path:
+
+```bash
+# Perform setup and configuration necessary to install the given certificate on the server.
+./setup/install-cert.sh test.dev /path/to/key.key /path/to/cert.crt
+```
+
+> It is important to note, that when accessing a local HTTPS site, it cannot be accessed through the use the local virtual IP address. Instead, the domain you visit should be routed to the virtual IP instead, typically through the use of a modified `hosts` file.
 
 ## Further Considerations
 
