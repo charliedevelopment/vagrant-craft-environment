@@ -16,8 +16,6 @@ sudo rm /etc/pki/tls/private/localhost.key
 # Move domain key and cert over.
 sudo mv /var/www/localhost.crt /etc/pki/tls/certs/localhost.crt
 sudo mv /var/www/localhost.key /etc/pki/tls/private/localhost.key
-# Update Apache configuration.
-# ???
 # Restart Apache.
 sudo systemctl restart httpd
 EOF

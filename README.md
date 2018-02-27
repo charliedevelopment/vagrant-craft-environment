@@ -192,6 +192,8 @@ phpcs /path/to/code
 phpcbf /path/to/code
 ```
 
+> Note that `phpcs` may also apply some of its rules to other files (it supports `.inc`, `.js`, and `.css` files as well). In order to prevent any modifications (especially to minified files), it is important to specify `--extensions=php` when running `phpcs` or `phpcbf`.
+
 ### Customized Ruleset
 
 Keep in mind the PSR-2 style requires spaces instead of tabs, so a slightly modified ruleset needs to be used in order to fit with our current standards. Thankfully, PHPCS allows for modification of its ruleset, either through providing a `--standard=/setup/phpcs-ruleset.xml` switch to its command line parameters, or more conveniently, it searches for a `phpcs.xml` file in the folder of the code being checked, and every parent folder thereof. It is then recommended that the `phpcs.xml` file from the `/setup` folder is included in plugin projects. For reference, there are other ruleset files within the `/setup` directory as well, with additional suffixes based on their deviations from the standard.
