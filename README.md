@@ -22,13 +22,15 @@ Using git from the command line will require you to have tools set up to access 
 
 ### Install Vagrant
 
-If using Windows, it's recommended to get 1.9.6 to avoid incompatibility issues with older versions of powershell. This may not entirely be the case any more, but just in case a newer version doesn't work, 1.9.6 is a safe version to roll back to.
+The Vagrantfile included with this project uses the trigger features available in vagrant 2.x. Older versions of this project contained configuration and notes regarding 1.x versions, if they are still needed for reference.
 
 Vagrant can be found here: https://www.vagrantup.com/downloads.html
 
+> A prior version of this guide and Vagrantfile were configured for the 1.x version of Vagrant. If updating to the 2.x version from a previous form of this guide, be sure to uninstall both previous plugins, using `vagrant plugin uninstall vagrant-triggers` and `vagrant plugin uninstall vagrant-vbguest`, first. Then, after installing the 2.x version, the `vagrant-vbguest` plugin may be reinstalled. Keep in mind the 2.x version of Vagrant comes with features similar to `vagrant-triggers` built in, and thus has a slightly different configuration file.
+
 ### Install VirtualBox
 
-Vagrant (as of writing) is not compatible with VirtualBox 5.2 or later, so it's best to use the latest 5.1 release.
+Historically, VirtualBox has updated and been incompatible with Vagrant until Vagrant has some time to update as well. Be sure to [check the VirtualBox versions compatible with the current version of Vagrant](https://www.vagrantup.com/docs/virtualbox/).
 
 VirtualBox can be found here: https://www.virtualbox.org/wiki/Downloads
 
@@ -39,8 +41,6 @@ VirtualBox can be found here: https://www.virtualbox.org/wiki/Downloads
 Before starting up the VM, there are a few additional steps to get Vagrant where needed. Open a shell/prompt and do the following:
 
 Run `vagrant plugin install vagrant-vbguest` to ensure the VirtualBox tools are installed on the guest OS when initialized.
-
-Run `vagrant plugin install vagrant-triggers` to add script trigger hooks that are used to help teardown the environment when the VM is destroyed.
 
 ### VM Setup
 
