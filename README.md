@@ -322,7 +322,8 @@ Listed here are all the parts you need to know about your new Vagrant environmen
 /.vagrant - Temporary working folder for Vagrant providers, stores configuration information, keys, etc. Generated and managed by Vagrant. Don't delete this if you have an active virtual machine tied to this folder.
 	/.vagrant/machines/default/virtualbox/private_key - Likely the only file here you will need to worry about. The default location of the vagrant user's SSH key used for tunneling from host to guest.
 /setup - Storage for scripts and utility files used by Vagrant automatically and available for use manually to vacilitate development. All scripts are documented.
-	app.php - Craft cms app configuration that force loads the LoginHelper module.
+	app.php - Craft CMS app configuration that force loads the LoginHelper module.
+	ca-config.conf - A base configuration for creating a CA certificate to use in signing local development scripts.
 	craft-reset.sh - Deletes any existing craft environment/database and creates a new one from scratch, faster than restroying and recreating a whole box. THIS DELETES THE ENTIRE WORKSPACE FOLDER.
 	FileMutex.php - See the section above in [Further Considerations](#further-considerations)
 	generate-ca-cert.sh - A reference script for generating a CA root SSL certificate.
@@ -340,6 +341,7 @@ Listed here are all the parts you need to know about your new Vagrant environmen
 	plugin-install.sh - Installs Composer dependencies from a git repository.
 	plugin-remove.sh - Uninstalls Composer dependencies.
 	plugin-update.sh - Attempts to update a Composer dependency from the original repository.
+	site-config.conf - A base configuration for createing a self-signed SSH certificates with a CA certificate for use within the local development environment.
 	site-setup.sh - Clones a site repository over an existing fresh craft install.
 	start.sh - Vagrant post-startup script.
 	use-mysql.sh - Destroys the current Craft install and creates a new one using MySQL.
