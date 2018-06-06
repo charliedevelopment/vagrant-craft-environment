@@ -6,6 +6,11 @@
 # Copy the underlying repository to the temporary path.
 mkdir workspace/.dev
 cp -a workspace/vendor/$1/.git workspace/.dev/.git
+# Ensure that the repository folder was copied before doing anything else to the guest.
+if [[ $? -ne 0 ]]; then
+	rm -rf workspace/.dev
+    exit 1
+fi
 # Start doing things on the box.
 ssh vagrant@192.168.33.10 -i .vagrant/machines/default/virtualbox/private_key << EOF
 cd /var/www

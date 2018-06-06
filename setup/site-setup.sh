@@ -3,6 +3,12 @@
 #
 # site-setup.sh /path/to/repository
 
+# Ensure the remote is valid before even trying.
+git ls-remote $1 > /dev/null
+if [[ $? -ne 0 ]]; then
+    exit 1
+fi
+# Start in the root site/workspace folder.
 cd workspace
 # Create our blank repository with no remote.
 git init

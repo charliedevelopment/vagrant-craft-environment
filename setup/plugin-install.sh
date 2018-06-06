@@ -3,6 +3,11 @@
 #
 # plugin-require.sh /path/to/repository
 
+# Ensure the remote is valid before even trying.
+git ls-remote $1 > /dev/null
+if [[ $? -ne 0 ]]; then
+    exit 1
+fi
 # Clone the provided repository to a temporary location.
 git clone $1 workspace/.dev
 # Retrieve the package name from the repository.
