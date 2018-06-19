@@ -1,4 +1,4 @@
-# This script runs first time provisioning for a box.
+# This script runs on the GUEST the first time provisioning a virtual box.
 # Do not run this script manually, Vagrant does this for you.
 
 ### Initial OS configuration/Setup

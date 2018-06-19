@@ -1,4 +1,4 @@
-# This script runs after every restart of the box.
+# This script runs on the GUEST after every restart of the virtual box.
 # Do not run this script manually, Vagrant does this for you.
 
 ### Start Apache
