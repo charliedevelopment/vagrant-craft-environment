@@ -9,6 +9,7 @@ cp -a workspace/vendor/$1/.git workspace/.dev/.git
 # Ensure that the repository folder was copied before doing anything else to the guest.
 if [[ $? -ne 0 ]]; then
 	rm -rf workspace/.dev
+	echo "Provided plugin namespace/handle does not exist."
     exit 1
 fi
 # Start doing things on the box.
