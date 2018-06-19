@@ -1,7 +1,8 @@
 # This script runs some additional provisioning for the purpose of PHP development.
-# This script can be run manually at any time from the GUEST.
+# This script can be run manually at any time from the HOST.
 # This script should only be run once.
 
+ssh vagrant@192.168.33.10 -i .vagrant/machines/default/virtualbox/private_key << EOF
 # Install the PHP CodeSniffer package globally.
 composer global require "squizlabs/php_codesniffer=*"
 # Update vagrant's bash profile to add the composer's bin folder, for composer tools.
@@ -13,3 +14,4 @@ phpcs --config-set php_path /usr/bin/php
 
 # Install the PHP documentor.
 # composer global require "phpdocumentor/phpdocumentor:2.*"
+EOF
