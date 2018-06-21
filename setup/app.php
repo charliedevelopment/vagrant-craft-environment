@@ -14,7 +14,7 @@
  */
 
 return [
-    'modules' => [
+	'modules' => [
 		'login-helper' => \modules\LoginHelper::class,
 	],
 	'bootstrap' => ['login-helper'],

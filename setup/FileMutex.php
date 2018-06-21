@@ -150,9 +150,9 @@ class FileMutex extends Mutex
         }
 
         @unlink($this->getLockFilePath($name));
-		flock($this->_files[$name], LOCK_UN);
-		fclose($this->_files[$name]);
-		@unlink($this->getLockFilePath($name));
+        flock($this->_files[$name], LOCK_UN);
+        fclose($this->_files[$name]);
+        @unlink($this->getLockFilePath($name));
 
         unset($this->_files[$name]);
         return true;

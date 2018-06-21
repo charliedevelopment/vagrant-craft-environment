@@ -7,7 +7,7 @@
 git ls-remote $1 > /dev/null
 if [[ $? -ne 0 ]]; then
 	echo "Provided path does not appear to be a git repository."
-    exit 1
+	exit 1
 fi
 # Clone the provided repository to a temporary location.
 git clone $1 workspace/.dev

@@ -10,7 +10,7 @@ cp -a workspace/vendor/$1/.git workspace/.dev/.git
 if [[ $? -ne 0 ]]; then
 	rm -rf workspace/.dev
 	echo "Provided plugin namespace/handle does not exist."
-    exit 1
+	exit 1
 fi
 # Start doing things on the box.
 ssh vagrant@192.168.33.10 -i .vagrant/machines/default/virtualbox/private_key << EOF

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <ruleset name="MyStandard">
-    <description>
+	<description>
 		PHP documentation blocks
-    </description>
+	</description>
 
 	<rule ref="Squiz.Commenting.FunctionComment"/>
 	<rule ref="Squiz.Commenting.FunctionCommentThrowTag"/>
@@ -19,5 +19,5 @@
 		<exclude name="Squiz.Commenting.FileComment.IncorrectLicenseName"/>
 	</rule>
 	<rule ref="Squiz.Commenting.VariableComment"/>
-    
+
 </ruleset>

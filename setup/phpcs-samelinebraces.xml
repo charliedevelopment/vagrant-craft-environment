@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <ruleset name="MyStandard">
-    <description>
-        Braces on line ends (https://gist.github.com/Ovsyanka/e2ab2ff76e7c0d7e75a1e4213a03ff95)
-    </description>
-    <rule ref="PSR2">
-        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine" />
-        <exclude name="PSR2.Classes.ClassDeclaration.OpenBraceNewLine" />
-    </rule>
-    <rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
-    <rule ref="Generic.Classes.OpeningBraceSameLine"/>
+	<description>
+		Braces on line ends (https://gist.github.com/Ovsyanka/e2ab2ff76e7c0d7e75a1e4213a03ff95)
+	</description>
+	<rule ref="PSR2">
+		<exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine" />
+		<exclude name="PSR2.Classes.ClassDeclaration.OpenBraceNewLine" />
+	</rule>
+	<rule ref="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
+	<rule ref="Generic.Classes.OpeningBraceSameLine"/>
 </ruleset>
