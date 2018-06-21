@@ -1,7 +1,4 @@
 <?php
-/**
- * Displays default login credentials on login pages, so it's very easy to access the control panel.
- */
 
 namespace modules;
 
@@ -13,7 +10,7 @@ use yii\base\Event;
 use yii\base\Module;
 
 /**
- * The main Craft module class.
+ * Displays default login credentials on login pages, so it's very easy to access the control panel.
  */
 class LoginHelper extends Module
 {
