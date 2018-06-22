@@ -56,7 +56,7 @@ Keep in mind that the initial install of craft (at least the release candidate v
 
 To shut down, restart, or completely delete the VM, use `vagrant halt`, `vagrant reload`, and `vagrant destroy`, respectively. **Do not use `reboot` via SSH to reboot the machine** as it will not remount shared folders.
 
-> If you want a quick way to reset Craft's database and workspace without destroying the Vagrant box and rebuilding it, while in the guest's terminal, you can run `/setup/craft-reset.sh`, which will drop the database, delete _everything_ from the web folder, and redownload/reinstall craft.
+> If you want a quick way to completely reset Craft to a freshly installed state, without the overhead of destroying the Vagrant box and rebuilding it, you can run `/setup/craft-reset-host.sh` on the host (or `/setup/craft-reset.sh` from within the guest), which will drop the database, delete _everything_ from the web folder, and redownload/reinstall craft. If you only want to reset the database to a clean initial state, without deleting any files, an additional parameter of `soft` may be passed to either script.
 
 ### Web Access
 
