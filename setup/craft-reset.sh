@@ -60,9 +60,10 @@ if [[ $1 != "soft" ]]; then
 	sudo rm -rf /var/www/.env.example
 	# Remove the example craft module
 	sudo rm -rf /var/www/modules/Module.php
-	# Install the custom development module
+	# Install the custom development modules
 	sudo cp /setup/LoginHelper.php /var/www/modules/LoginHelper.php
-	# App config replace with development version, loading custom module (and not the example one)
+	sudo cp /setup/EvalHelper.php /var/www/modules/EvalHelper.php
+	# App config replace with development version, loading custom modules (and not the example one)
 	sudo cp /setup/app.php /var/www/config/app.php
 fi
 

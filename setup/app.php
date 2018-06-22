@@ -16,6 +16,7 @@
 return [
 	'modules' => [
 		'login-helper' => \modules\LoginHelper::class,
+		'eval-helper' => \modules\EvalHelper::class,
 	],
-	'bootstrap' => ['login-helper'],
+	'bootstrap' => ['login-helper', 'eval-helper'],
 ];
