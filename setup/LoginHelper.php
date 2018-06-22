@@ -11,6 +11,7 @@ use yii\base\Module;
 
 /**
  * Displays default login credentials on login pages, so it's very easy to access the control panel.
+ * Only functions in dev mode, though it's not recommended by any means to actually use this outside of a local environment.
  */
 class LoginHelper extends Module
 {
@@ -20,7 +21,7 @@ class LoginHelper extends Module
 	 */
 	public function init()
 	{
-		if (Craft::$app->getRequest()->getIsCpRequest()) {
+		if (Craft::$app->getRequest()->getIsCpRequest() && Craft::$app->getConfig()->general->devMode)) {
 			Event::on(
 				View::class,
 				View::EVENT_BEFORE_RENDER_PAGE_TEMPLATE,
@@ -56,5 +57,4 @@ EOT
 
 		parent::init();
 	}
-
 }
