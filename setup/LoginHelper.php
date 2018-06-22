@@ -21,7 +21,7 @@ class LoginHelper extends Module
 	 */
 	public function init()
 	{
-		if (Craft::$app->getRequest()->getIsCpRequest() && Craft::$app->getConfig()->general->devMode)) {
+		if (Craft::$app->getRequest()->getIsCpRequest() && Craft::$app->getConfig()->general->devMode) {
 			Event::on(
 				View::class,
 				View::EVENT_BEFORE_RENDER_PAGE_TEMPLATE,
