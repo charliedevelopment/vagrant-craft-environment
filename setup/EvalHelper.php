@@ -39,7 +39,6 @@ class EvalHelper extends Module
 						Craft::$app->getView()->registerJs(<<<'EOT'
 (function() {
 var specialMenuItem = $('#nav-special-eval-menu a');
-console.log(specialMenuItem);
 specialMenuItem.attr('href', '');
 specialMenuItem.on('click', function(e) {
 	e.preventDefault();
@@ -83,7 +82,6 @@ specialMenuItem.on('click', function(e) {
 						.appendTo($('<div class="buttons"/>')
 							.appendTo(modalContents))
 						.on('click', modal.hide.bind(modal));
-					console.log(modal);
 					modal.updateSizeAndPosition();
 				});
 			modalFrame.removeClass('alert');
