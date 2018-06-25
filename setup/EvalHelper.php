@@ -4,7 +4,10 @@ namespace modules;
 
 use Craft;
 use craft\events\RegisterCpNavItemsEvent;
+use craft\Events\RegisterUrlRulesEvent;
 use craft\events\TemplateEvent;
+use craft\web\Controller;
+use craft\web\UrlManager;
 use craft\web\View;
 use craft\web\twig\variables\Cp;
 
@@ -27,8 +30,15 @@ class EvalHelper extends Module
 	{
 		if (Craft::$app->getConfig()->general->devMode && Craft::$app->getUser()->getIsAdmin()) {
 
-			\Craft::$app->controllerMap['eval'] = '\modules\EvalController';
-			\Craft::$app->getUrlManager()->addRules(['POST eval' => 'eval/eval']);
+			Event::on(
+				UrlManager::class,
+				UrlManager::EVENT_REGISTER_SITE_URL_RULES,
+				function (RegisterUrlRulesEvent $event) {
+					$event->rules['eval'] = ['route' => 'eval/eval'];
+				}
+			);
+
+			Craft::$app->controllerMap['eval'] = '\modules\EvalController';
 
 			if (Craft::$app->getRequest()->getIsCpRequest()) {
 
@@ -119,7 +129,7 @@ EOT
 	}
 }
 
-class EvalController extends \craft\web\Controller {
+class EvalController extends Controller {
 	public function actionEval() {
 		$script = Craft::$app->getRequest()->getRequiredBodyParam('script');
 		header('Content-Type: text/plain');
