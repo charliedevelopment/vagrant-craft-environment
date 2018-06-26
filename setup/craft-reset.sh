@@ -6,12 +6,30 @@
 
 ### Set up Craft 3
 
-if [[ $1 != "soft" && $1 != "" ]]; then
+if [[ $1 != "soft" && $1 != "quiet" && $1 != "" ]]; then
 	echo "Please specify either \"soft\" for a DB-only reset, or no parameter for a full reset."
 	exit 1
 fi
 
-# Hard reset only
+# Confirm this is what the user really wants to do
+if [[ $1 != "quiet" ]]; then
+
+	if [[ $1 != "soft" ]]; then
+		echo "THIS WILL DESTROY ALL CRAFT DATA, INCLUDING ITS DATABASE AND FILES!"
+	else
+		echo "THIS WILL DESTROY THE CRAFT DATABASE, BUT LEAVE ALL OTHER FILES INTACT!"
+	fi
+	read -p "ARE YOU 200% SURE? (y/n) " -n 1 -r
+	echo
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		echo "Goodbye, Craft!"
+	else
+		echo "Craft reset aborted, everything remains unchanged"
+		exit 1
+	fi
+fi
+
+# Hard (quiet) reset only
 if [[ $1 != "soft" ]]; then
 	# Make sure everything is writable, so that it may be deleted
 	sudo chmod -R u+w /var/www/
@@ -46,12 +64,18 @@ fi
 # Keep in mind, craft setup, which can be done via the CLI, doesn't have command line options, and only makes the above adjustments anyway
 # Run craft install via the CLI
 sudo php /var/www/craft install --username="admin" --email="vagrant@localhost.localdomain" --password="craftdev" --siteName="Craft Dev" --siteUrl="http://192.168.33.10/" --language="en_us"
+systemctl status mariadb
+if [[ $? == 0 ]]; then
+	mysql -u root -prootpassword -e "UPDATE craft.userpreferences SET preferences = '{\"language\":\"en-US\",\"weekStartDay\":\"0\",\"enableDebugToolbarForSite\":true,\"enableDebugToolbarForCp\":true}';"
+else
+	PGPASSWORD=rootpassword psql postgres root -c "UPDATE craft.userpreferences SET preferences = '{\"language\":\"en-US\",\"weekStartDay\":\"0\",\"enableDebugToolbarForSite\":true,\"enableDebugToolbarForCp\":true}';"
+fi
 # New files have been added with the install script, get ownership of those, too
 sudo chown -R apache:apache /var/www/
 
 ### Clean up some residual craft things, to keep any workspace-level git repositories clean
 
-# Hard reset only
+# Hard (quiet) reset only
 if [[ $1 != "soft" ]]; then
 	# Readme and license files, to not conflict with any provided by a repository
 	sudo rm -rf /var/www/LICENSE.md
@@ -69,7 +93,7 @@ fi
 
 ### Some really crazy stuff
 
-# Hard reset only
+# Hard (quiet) reset only
 if [[ $1 != "soft" ]]; then
 	# This will check to see if we can replace the installed FileMutex class from Yii 2 with our own custom edits.
 	# The MD5 will change if the underlying file is ever changed, which should prompt a re-edit of this file and

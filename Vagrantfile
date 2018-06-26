@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
 	config.vm.provision :shell, path: "setup/init.sh"
 
 	# Run this script on first provision
-	config.vm.provision :shell, path: "setup/craft-reset.sh"
+	config.vm.provision :shell, path: "setup/craft-reset.sh", args: "quiet"
 
 	# Run this script on any `vagrant up`
 	config.vm.provision :shell, run: "always", path: "setup/start.sh"
