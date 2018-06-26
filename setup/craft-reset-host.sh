@@ -4,4 +4,4 @@
 # without removal/reset of any files.
 # It is only for convenience running from the HOST.
 
-ssh vagrant@192.168.33.10 -i .vagrant/machines/default/virtualbox/private_key "/setup/craft-reset.sh \"$@\""
+ssh vagrant@192.168.33.10 -t -i .vagrant/machines/default/virtualbox/private_key "/setup/craft-reset.sh \"$@\""
