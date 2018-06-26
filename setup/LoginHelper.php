@@ -21,6 +21,8 @@ class LoginHelper extends Module
 	 */
 	public function init()
 	{
+		parent::init();
+
 		if (Craft::$app->getRequest()->getIsCpRequest() && Craft::$app->getConfig()->general->devMode) {
 			Event::on(
 				View::class,
@@ -54,7 +56,5 @@ EOT
 				}
 			);
 		}
-
-		parent::init();
 	}
 }

@@ -28,6 +28,8 @@ class EvalHelper extends Module
 	 */
 	public function init()
 	{
+		parent::init();
+
 		if (Craft::$app->getConfig()->general->devMode && Craft::$app->getUser()->getIsAdmin()) {
 
 			Event::on(
@@ -124,13 +126,13 @@ EOT
 				}
 			);
 		}
-
-		parent::init();
 	}
 }
 
-class EvalController extends Controller {
-	public function actionEval() {
+class EvalController extends Controller
+{
+	public function actionEval()
+	{
 		$script = Craft::$app->getRequest()->getRequiredBodyParam('script');
 		header('Content-Type: text/plain');
 		eval($script);
