@@ -12,11 +12,10 @@ fi
 
 ### Confirm this is what the user really wants to do
 
-echo "THIS WILL DESTROY ALL CRAFT DATA AND RESET THE INSTANCE TO USE MYSQL!"
+echo "THIS WILL DESTROY ALL CRAFT DATA, INCLUDING ITS DATABASE AND FILES. THE INSTANCE WILL THEN USE MYSQL!"
 read -p "ARE YOU 200% SURE? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
+if [[ $REPLY =~ ^[Yy]$ ]]; then
 	echo "Tearing down PostgreSQL instance and setting up MySQL"
 else
 	echo "MySQL install aborted, everything remains unchanged"
@@ -26,12 +25,12 @@ fi
 ### Set up MySQL
 
 # Stop the PostgreSQL service
-sudo systemctl enable postgresql
-sudo systemctl start postgresql
+sudo systemctl stop postgresql-9.6
+sudo systemctl disable postgresql-9.6
 # Start the MariaDB service
-sudo systemctl stop mariadb
-sudo systemctl disable mariadb
+sudo systemctl enable mariadb
+sudo systemctl start mariadb
 
 ### Reset the Craft install
 
-/setup/craft_reset.sh
+/setup/craft-reset.sh quiet

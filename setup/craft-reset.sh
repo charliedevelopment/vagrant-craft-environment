@@ -68,7 +68,7 @@ systemctl status mariadb
 if [[ $? == 0 ]]; then
 	mysql -u root -prootpassword -e "UPDATE craft.userpreferences SET preferences = '{\"language\":\"en-US\",\"weekStartDay\":\"0\",\"enableDebugToolbarForSite\":true,\"enableDebugToolbarForCp\":true}';"
 else
-	PGPASSWORD=rootpassword psql postgres root -c "UPDATE craft.userpreferences SET preferences = '{\"language\":\"en-US\",\"weekStartDay\":\"0\",\"enableDebugToolbarForSite\":true,\"enableDebugToolbarForCp\":true}';"
+	PGPASSWORD=rootpassword psql craft root -c "UPDATE userpreferences SET preferences = '{\"language\":\"en-US\",\"weekStartDay\":\"0\",\"enableDebugToolbarForSite\":true,\"enableDebugToolbarForCp\":true}';"
 fi
 # New files have been added with the install script, get ownership of those, too
 sudo chown -R apache:apache /var/www/

@@ -12,11 +12,10 @@ fi
 
 ### Confirm this is what the user really wants to do
 
-echo "THIS WILL DESTROY ALL CRAFT DATA AND RESET THE INSTANCE TO USE POSTGRESQL!"
+echo "THIS WILL DESTROY ALL CRAFT DATA, INCLUDING ITS DATABASE AND FILES. THE INSTANCE WILL THEN USE POSTGRESQL!"
 read -p "ARE YOU 200% SURE? (y/n) " -n 1 -r
 echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
+if [[ $REPLY =~ ^[Yy]$ ]]; then
 	echo "Tearing down MySQL instance and setting up PostgreSQL"
 else
 	echo "PostgreSQL install aborted, everything remains unchanged"
@@ -29,7 +28,7 @@ fi
 sudo systemctl stop mariadb
 sudo systemctl disable mariadb
 # Only run install/initial setup if PostgreSQL isn't currently installed
-yum list installed postgresql-server
+yum list installed postgresql96-server
 if [[ $? == 1 ]]; then
 	sudo yum install -y https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
 	# Install PostgreSQL
@@ -46,8 +45,9 @@ if [[ $? == 1 ]]; then
 	# Install PHP PostgreSQL extension
 	sudo yum -y install php-pgsql
 	# Copy PostgreSQL configuration
-	sudo mv /var/www/pg_hba.conf /var/lib/pgsql/9.6/data/pg_hba.conf
-	# Restart the PostgreSQL service
+	sudo mv /setup/pg_hba.conf /var/lib/pgsql/9.6/data/pg_hba.conf
+	# Restart the Apache and PostgreSQL services
+	sudo systemctl restart httpd
 	sudo systemctl restart postgresql-9.6
 else
 	# Start the PostgreSQL service
@@ -57,4 +57,4 @@ fi
 
 ### Reset the Craft install
 
-/setup/craft_reset.sh
+/setup/craft-reset.sh quiet
