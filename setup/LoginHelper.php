@@ -23,11 +23,14 @@ class LoginHelper extends Module
 	{
 		parent::init();
 
+		// Render the JS only on the control panel, and only in dev mode.
 		if (Craft::$app->getRequest()->getIsCpRequest() && Craft::$app->getConfig()->general->devMode) {
 			Event::on(
 				View::class,
 				View::EVENT_BEFORE_RENDER_PAGE_TEMPLATE,
 				function (TemplateEvent $event) {
+
+					// Modify the login page's box.
 					if (isset(Craft::$app->requestedAction)
 						&& Craft::$app->requestedAction->id = 'login'
 						&& is_a(Craft::$app->requestedAction->controller, craft\controllers\UsersController::class)) { // On the login page specifically, register some JS that will show the default credentials.

@@ -18,7 +18,7 @@ use yii\base\Module;
  * Adds a section to the control panel that allows a user to evaluate raw PHP. Allows for quick running of copied
  * error demonstration code, test snippets, weird one-off cases, and destroying the entire site.
  * Really, even though this only works in dev mode, be _very_ careful with it, and please don't deploy this to any
- * publically-facing stes.
+ * publically-facing sites.
  */
 class EvalHelper extends Module
 {
@@ -30,8 +30,10 @@ class EvalHelper extends Module
 	{
 		parent::init();
 
+		// Only allow eval functionality for admins and when the site is in dev mode.
 		if (Craft::$app->getConfig()->general->devMode && Craft::$app->getUser()->getIsAdmin()) {
 
+			// Map the '/eval' URL to the 'eval' route and eval 'action'.
 			Event::on(
 				UrlManager::class,
 				UrlManager::EVENT_REGISTER_SITE_URL_RULES,
@@ -40,8 +42,10 @@ class EvalHelper extends Module
 				}
 			);
 
+			// Map the `eval` route to the EvalController.
 			Craft::$app->controllerMap['eval'] = '\modules\EvalController';
 
+			// Add JS for the eval modal on control panel requests.
 			if (Craft::$app->getRequest()->getIsCpRequest()) {
 
 				Event::on(
@@ -114,6 +118,7 @@ EOT
 				);
 			}
 
+			// Add the dummy eval button to the CP sidebar.
 			Event::on(
 				Cp::class,
 				Cp::EVENT_REGISTER_CP_NAV_ITEMS,
@@ -129,6 +134,9 @@ EOT
 	}
 }
 
+/**
+ * A controller that simply allows using PHP `eval()` on a user-provided script.
+ */
 class EvalController extends Controller
 {
 	public function actionEval()
