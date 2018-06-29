@@ -33,7 +33,7 @@ class LoginHelper extends Module
 					// Modify the login page's box.
 					if (isset(Craft::$app->requestedAction)
 						&& Craft::$app->requestedAction->id = 'login'
-						&& is_a(Craft::$app->requestedAction->controller, craft\controllers\UsersController::class)) { // On the login page specifically, register some JS that will show the default credentials.
+						&& is_a(Craft::$app->requestedAction->controller, \craft\controllers\UsersController::class)) { // On the login page specifically, register some JS that will show the default credentials.
 						Craft::$app->getView()->registerJs(<<<'EOT'
 $('#password-field').after('<p class="centeralign"><code>User: admin&nbsp;&nbsp;|&nbsp;&nbsp;Pass: craftdev</code></p>');
 EOT
