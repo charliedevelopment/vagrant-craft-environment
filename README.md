@@ -179,7 +179,7 @@ Craft CMS supports both MySQL and PostgreSQL. To assist with testing, some scrip
 
 ## Code Guidelines/Standards
 
-[Craft recommends following these coding standards](https://github.com/craftcms/docs/blob/master/en/coding-guidelines.md). These guidelines note following the PSR-1 coding standard & PRS-2 coding style. To help facilitate code consistency, it is recommended to use the PHP CodeSniffer tool, which will find and can automatically fix inconsistencies with these rules. For convenience, there is a `php-dev-init.sh` script provided that can be run within the guest in order to install and set up the tool quickly. It is recommended to run this before every commit, to ensure code consistency.
+[Craft recommends following these coding standards](https://github.com/craftcms/docs/blob/master/en/coding-guidelines.md). These guidelines note following the PSR-1 coding standard & PRS-2 coding style. To help facilitate code consistency, it is recommended to use the PHP CodeSniffer tool, which will find and can automatically fix inconsistencies with these rules. For convenience, there is a `php-dev-init.sh` script provided that can be run within the environment folder on the host in order to install and set up the tool quickly. It is recommended to run the tool before every commit, to ensure code consistency.
 
 To run the tool on some code, run the following on the guest:
 
