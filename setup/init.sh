@@ -3,6 +3,15 @@
 
 ### Initial OS configuration/Setup
 
+# Ensure the provision doesn't accidentally rerun over an already-provisioned system
+if [ -f /var/www/composer.json ]; then
+	echo "=================================================="
+	echo "Attempted to run provisioning on a VM with an already-provisioned workspace."
+	echo "This is generally a very bad thing, please check appropriate configurations to ensure your VMs actually exist."
+	echo "=================================================="
+	exit 1
+fi
+
 # Create the apache user with a specific, predefined user and group id
 # This is used for the shared folder that holds the craft install, since it is mounted to the default web server folder.
 sudo groupadd -g 48 apache
