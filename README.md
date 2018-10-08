@@ -314,6 +314,24 @@ All shell scripts and the Vagrantfile itself are fully documented for reference.
 
 Because the workspace is deleted upon reset of craft and initialization of a new Vagrant instance, if the Vagrant instance is destroyed, it is recommended to recover any necessary files before starting a new instance in the same folder.
 
+## Doomsday Scenarios
+
+### Provisioning script running a second time on `vagrant up`
+
+This can happen when VirtualBox loses its VM configurations, and Vagrant cannot find a VM with the previous provided ID. When this happens, Vagrant will instruct VirtualBox to create a brand new VM and rerun provisioning all over again. There is a check in place to make sure that the `workspace` folder isn't recreated when this happens. In this case, check your VirtualBox configuration, and re-add the VMs if possible, and remove the erroneously created VM. You will also need to follow the instructions in the next two sections.
+
+### Update Vagrant Folder to Point to a Different VM Instance
+
+When a new VM is created in an environment folder, its `.vagrant/machines/default/virtualbox/id` file will be updated to point to the new VM in VirtualBox. In order to point the environment to a different VM, in the case of the above scenario, you must find your VM's `.vbox` file, and copy the `Machine`'s `uuid` into this `id` file.
+
+### Authentication Failure When Running `vagrant up`
+
+It is possible, if the `.vagrant/machines/default/virtualbox/private_key` file becomes invalid or lost, that Vagrant will be unable to connect to the running VirtualBox VM instance. In order to regain access, one option is discarding the private key and using Vagrant's default key, causing it to regenerate a new one on next startup. Start by deleting the `private_key` file, and then running the VM through the VirtualBox console. Log in with the default credentials of `vagrant` / `vagrant`. Navigate to the `~/.ssh` directory, and delete the `authorized_keys` file. Download the key to this directory by running `wget https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub`. Rename this file with `mv vagrant.pub authorized_keys`. Change the file permissions to those required by `authorized_keys` by running `chmod 600 authorized_keys`. Finally, shut down the VM, and then run Vagrant with `vagrant up --no-provision`.
+
+> Note that `wget` doesn't exist on CentOS by default, so you'll need to run `sudo yum install wget` first.
+
+> Also note that by default, Vagrant will re-run provisioning if it detects a missing key, in addition to simply regenerating it.
+
 ## Contents
 
 Listed here are all the parts you need to know about your new Vagrant environment and Craft installation.
