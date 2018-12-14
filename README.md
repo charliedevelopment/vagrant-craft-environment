@@ -50,8 +50,6 @@ That's all you need to do, once finished your Craft installation will be ready t
 
 Keep in mind that the initial install of craft (at least the release candidate versions) will not come with any default sections/fields/templates, and thus 404 on visiting anything but the control panel.
 
-> Because Craft 3 is still under active development, it is possible that the current version installed does not function, if this is the case, you will need to either report an issue and wait, or manually make adjustments to the Composer install script in order to pull a specific tagged version.
-
 ## VM Usage
 
 To shut down, restart, or completely delete the VM, use `vagrant halt`, `vagrant reload`, and `vagrant destroy`, respectively. **Do not use `reboot` via SSH to reboot the machine** as it will not remount shared folders.
@@ -60,7 +58,9 @@ To shut down, restart, or completely delete the VM, use `vagrant halt`, `vagrant
 
 ### Web Access
 
-The virtual address for the vagrant machine is `192.168.33.10`, and thus visiting this address in a web browser on the same local machine will take you to the Craft installation. The web port is also forwarded through your local network on port 8081. Anyone else on your network can visit your local craft install by visiting your IP on this port (similar to [127.0.0.1:8081](http://127.0.0.1:8081/admin)).
+The default virtual address for the vagrant machine is `192.168.33.10`, and thus visiting this address in a web browser on the same local machine will take you to the Craft installation.
+
+> There are additional configuration options available within the `Vagrantfile`. Simply run `vagrant reload` when making configuration changes. Some available options are changing the local IP address the machine uses (necessary if you have multiple machines), automatically assigning local hostnames to instances, and forwarding incoming traffic on a host's port to a guest machine.
 
 ### Files
 
