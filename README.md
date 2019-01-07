@@ -36,7 +36,7 @@ VirtualBox can be found here: https://www.virtualbox.org/wiki/Downloads
 
 ### Vagrant Setup
 
-> When referencing the **Vagrant environment folder**, this readme means the folder containing your `Vagrantfile`. Any `vagrant` commands should be run from this folder.
+> When referencing the **Vagrant environment directory**, this readme means the directory containing your `Vagrantfile`. Any `vagrant` commands should be run from this directory.
 
 Before starting up the VM, there are a few additional steps to get Vagrant where needed. Open a shell/prompt and do the following:
 
@@ -44,7 +44,7 @@ Run `vagrant plugin install vagrant-vbguest` to ensure the VirtualBox tools are 
 
 ### VM Setup
 
-Open a shell/prompt and navigate to the Vagrant environment folder. Run `vagrant up` to start the guest virtual machine. The initial install process will take a while as it downloads the CentOS image, installs several packages, makes configuration changes, and ultimately sets up Craft.
+Open a shell/prompt and navigate to the Vagrant environment directory. Run `vagrant up` to start the guest virtual machine. The initial install process will take a while as it downloads the CentOS image, installs several packages, makes configuration changes, and ultimately sets up Craft.
 
 That's all you need to do, once finished your Craft installation will be ready to use at [192.168.33.10](http://192.168.33.10/admin). The default Craft username is **admin** and the password is **craftdev**.
 
@@ -52,9 +52,9 @@ Keep in mind that the initial install of craft (at least the release candidate v
 
 ## VM Usage
 
-To shut down, restart, or completely delete the VM, use `vagrant halt`, `vagrant reload`, and `vagrant destroy`, respectively. **Do not use `reboot` via SSH to reboot the machine** as it will not remount shared folders.
+To shut down, restart, or completely delete the VM, use `vagrant halt`, `vagrant reload`, and `vagrant destroy`, respectively. **Do not use `reboot` via SSH to reboot the machine** as it will not remount shared directories.
 
-> If you want a quick way to completely reset Craft to a freshly installed state, without the overhead of destroying the Vagrant box and rebuilding it, you can run `/setup/craft-reset-host.sh` on the host (or `/setup/craft-reset.sh` from within the guest), which will drop the database, delete _everything_ from the web folder, and redownload/reinstall craft. If you only want to reset the database to a clean initial state, without deleting any files, an additional parameter of `soft` may be passed to either script.
+> If you want a quick way to completely reset Craft to a freshly installed state, without the overhead of destroying the Vagrant box and rebuilding it, you can run `/setup/craft-reset-host.sh` on the host (or `/setup/craft-reset.sh` from within the guest), which will drop the database, delete _everything_ from the web directory, and redownload/reinstall craft. If you only want to reset the database to a clean initial state, without deleting any files, an additional parameter of `soft` may be passed to either script.
 
 ### Web Access
 
@@ -64,11 +64,11 @@ The default virtual address for the vagrant machine is `192.168.33.10`, and thus
 
 ### Files
 
-Within the Vagrant environment folder, a `workspace` folder is created to allow development on the host machine. This folder is mounted to the guest machine as the webserver root folder (`/var/www`) used by Apache. The public folder is configured to the `/var/www/html` folder. **This folder will be automatically deleted when the vagrant machine is destroyed.**
+Within the Vagrant environment directory, a `workspace` directory is created to allow development on the host machine. This directory is mounted to the guest machine as the webserver root directory (`/var/www`) used by Apache. The public directory is configured to the `/var/www/html` directory. **This directory will be automatically deleted when the vagrant machine is destroyed.**
 
-There is an additional `/setup` folder on the guest that is synced from the `setup` folder within the Vagrant environment folder. This contains some scripts and configuration files used in setting up the machine or available for convenience as documented below.
+There is an additional `/setup` directory on the guest that is synced from the `setup` directory within the Vagrant environment directory. This contains some scripts and configuration files used in setting up the machine or available for convenience as documented below.
 
-> Use the `workspace` folder to transfer data, the `setup` folder is not actively synced back and forth. **Files written to the `/setup` folder on the guest machine will be lost on guest reboot**.
+> Use the `workspace` directory to transfer data, the `setup` directory is not actively synced back and forth. **Files written to the `/setup` directory on the guest machine will be lost on guest reboot**.
 
 ### SSH
 
@@ -98,15 +98,15 @@ If you need to access the database, you will need to connect via an SSH tunnel (
 
 ### Snapshots
 
-VirtualBox as a provider supports [snapshots](https://www.vagrantup.com/docs/cli/snapshot.html). **Make sure to _ALWAYS_ run these commands with the --no-provision flag**, otherwise the initialization script will run again, which _will_ cause issues. Keep in mind as well, that **snapshots will not restore the `/var/www` (`workspace`) folder**, so their utility in development may be low. If you want a copy of a project to fall back to, you will need to copy it manually.
+VirtualBox as a provider supports [snapshots](https://www.vagrantup.com/docs/cli/snapshot.html). **Make sure to _ALWAYS_ run these commands with the --no-provision flag**, otherwise the initialization script will run again, which _will_ cause issues. Keep in mind as well, that **snapshots will not restore the `/var/www` (`workspace`) directory**, so their utility in development may be low. If you want a copy of a project to fall back to, you will need to copy it manually.
 
 ## Site Development
 
-Working with the contents of a Craft site that are synced to a git repository is relatively straightforward. Craft excludes content that isn't necessary from the repository by default, such as the `/vendor` folder, or the contents of the `/html/cpresources` folder.
+Working with the contents of a Craft site that are synced to a git repository is relatively straightforward. Craft excludes content that isn't necessary from the repository by default, such as the `/vendor` directory, or the contents of the `/html/cpresources` directory.
 
-Generally these repositories contain the data mapped to the web root, so you would normally clone the repository into the Craft install, but you can't clone a git repository to a non-empty folder. An easy solution would be to clone to another location, then copy the files in.
+Generally these repositories contain the data mapped to the web root, so you would normally clone the repository into the Craft install, but you can't clone a git repository to a non-empty directory. An easy solution would be to clone to another location, then copy the files in.
 
-> For convenience, and for reference if setting up automation, there is a script in the `/setup` folder called `site-setup.sh` that assists with this process. Call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment folder on the host, passing it the repository path.
+> For convenience, and for reference if setting up automation, there is a script in the `/setup` directory called `site-setup.sh` that assists with this process. Call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment directory on the host, passing it the repository path.
 
 ```bash
 # Set up a site from a repository automatically.
@@ -115,9 +115,9 @@ Generally these repositories contain the data mapped to the web root, so you wou
 
 ## Plugin Development
 
-Craft plugins are Composer packages, which come with some setup and installation requirements, and thus cannot just be dropped in a folder to install them. Usually they can be installed from external repositories, but for development purposes this typical method is _very_ slow. There are some considerations to make in order facilitate a smooth development experience.
+Craft plugins are Composer packages, which come with some setup and installation requirements, and thus cannot just be dropped in a directory to install them. Usually they can be installed from external repositories, but for development purposes this typical method is _very_ slow. There are some considerations to make in order facilitate a smooth development experience.
 
-> To skip all the details, and get to working immediately, there is a script in the `/setup` folder called `plugin-install.sh` that will get you up and running with a plugin repository. Call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment folder on the host, passing it the package name and the repository path. **This method has some caveats outlined further below, though for general adjustments and quick testing, this can get you working without having to know all the details**.
+> To skip all the details, and get to working immediately, there is a script in the `/setup` directory called `plugin-install.sh` that will get you up and running with a plugin repository. Call it from a terminal (or something like the git bash, on Windows) while within your Vagrant environment directory on the host, passing it the package name and the repository path. **This method has some caveats outlined further below, though for general adjustments and quick testing, this can get you working without having to know all the details**.
 
 ```bash
 # Install a plugin from a repository automatically.
@@ -139,9 +139,9 @@ Composer does provide a mechanism to allow packages to be retrieved through othe
 ],
 ```
 
-Normally this would symlink the given path to the `/vendor` folder where Composer packages are installed, in addition to making the appropriate changes to the package manifests, autoloaders, and `composer.lock` files. **Keep in mind, doing this within VirtualBox's sync filesystem won't use symlinking, and instead copies the files**. This process takes us a step further, allowing our non-public package to be installed to Composer, where you can then make edits to the underlying files in the `/vendor` folder.
+Normally this would symlink the given path to the `/vendor` directory where Composer packages are installed, in addition to making the appropriate changes to the package manifests, autoloaders, and `composer.lock` files. **Keep in mind, doing this within VirtualBox's sync filesystem won't use symlinking, and instead copies the files**. This process takes us a step further, allowing our non-public package to be installed to Composer, where you can then make edits to the underlying files in the `/vendor` directory.
 
-> Keep in mind that while this method may be fairly direct, it has limitations. Updates made directly to packages in the `/vendor` folder aren't picked up by `composer install` and `composer update` commands, meaning changes to version numbers and package information won't be reflected. In the case of Craft plugins, there are even more internal functions of Craft that are run on plugin install/uninstall that may not function properly on in-place edits (notice how plugins have package types of `craft-plugin` and not `library`).
+> Keep in mind that while this method may be fairly direct, it has limitations. Updates made directly to packages in the `/vendor` directory aren't picked up by `composer install` and `composer update` commands, meaning changes to version numbers and package information won't be reflected. In the case of Craft plugins, there are even more internal functions of Craft that are run on plugin install/uninstall that may not function properly on in-place edits (notice how plugins have package types of `craft-plugin` and not `library`).
 
 ---
 
@@ -171,7 +171,7 @@ The provided `plugin-install.sh` script attempts to get the best it can from bot
 ./setup/plugin-remove.sh package/name
 ```
 
-> Keep in mind, if you have made in-place edits to a plugin manually installed through git (using the `plugin-install.sh` script) it is possible that composer will fail to uninstall the plugin because of changes that have not been committed. Even if you have committed the changes normally to the `origin` branch, it will still complain about the temporary, dummy `composer` branch. In order to avoid this issue entirely, delete the `.git` folder of the plugin, and the plugin can be removed normally.
+> Keep in mind, if you have made in-place edits to a plugin manually installed through git (using the `plugin-install.sh` script) it is possible that composer will fail to uninstall the plugin because of changes that have not been committed. Even if you have committed the changes normally to the `origin` branch, it will still complain about the temporary, dummy `composer` branch. In order to avoid this issue entirely, delete the `.git` directory of the plugin, and the plugin can be removed normally.
 
 ## Database Switching
 
@@ -179,7 +179,7 @@ Craft CMS supports both MySQL and PostgreSQL. To assist with testing, some scrip
 
 ## Code Guidelines/Standards
 
-[Craft recommends following these coding standards](https://github.com/craftcms/docs/blob/master/en/coding-guidelines.md). These guidelines note following the PSR-1 coding standard & PRS-2 coding style. To help facilitate code consistency, it is recommended to use the PHP CodeSniffer tool, which will find and can automatically fix inconsistencies with these rules. For convenience, there is a `php-dev-init.sh` script provided that can be run within the environment folder on the host in order to install and set up the tool quickly. It is recommended to run the tool before every commit, to ensure code consistency.
+[Craft recommends following these coding standards](https://github.com/craftcms/docs/blob/master/en/coding-guidelines.md). These guidelines note following the PSR-1 coding standard & PRS-2 coding style. To help facilitate code consistency, it is recommended to use the PHP CodeSniffer tool, which will find and can automatically fix inconsistencies with these rules. For convenience, there is a `php-dev-init.sh` script provided that can be run within the environment directory on the host in order to install and set up the tool quickly. It is recommended to run the tool before every commit, to ensure code consistency.
 
 To run the tool on some code, run the following on the guest:
 
@@ -196,7 +196,7 @@ phpcbf /path/to/code
 
 ### Customized Ruleset
 
-Keep in mind the PSR-2 style requires spaces instead of tabs, so a slightly modified ruleset needs to be used in order to fit with our current standards. Thankfully, PHPCS allows for modification of its ruleset, either through providing a `--standard=/setup/phpcs-ruleset.xml` switch to its command line parameters, or more conveniently, it searches for a `phpcs.xml` file in the folder of the code being checked, and every parent folder thereof. It is then recommended that the `phpcs.xml` file from the `/setup` folder is included in plugin projects. For reference, there are other ruleset files within the `/setup` directory as well, with additional suffixes based on their deviations from the standard.
+Keep in mind the PSR-2 style requires spaces instead of tabs, so a slightly modified ruleset needs to be used in order to fit with our current standards. Thankfully, PHPCS allows for modification of its ruleset, either through providing a `--standard=/setup/phpcs-ruleset.xml` switch to its command line parameters, or more conveniently, it searches for a `phpcs.xml` file in the directory of the code being checked, and every parent directory thereof. It is then recommended that the `phpcs.xml` file from the `/setup` directory is included in plugin projects. For reference, there are other ruleset files within the `/setup` directory as well, with additional suffixes based on their deviations from the standard.
 
 ## HTTPS Configuration
 
@@ -312,17 +312,17 @@ All shell scripts and the Vagrantfile itself are fully documented for reference.
 
 ### Preserving Workspace
 
-Because the workspace is deleted upon reset of craft and initialization of a new Vagrant instance, if the Vagrant instance is destroyed, it is recommended to recover any necessary files before starting a new instance in the same folder.
+Because the workspace is deleted upon reset of craft and initialization of a new Vagrant instance, if the Vagrant instance is destroyed, it is recommended to recover any necessary files before starting a new instance in the same directory.
 
 ## Doomsday Scenarios
 
 ### Provisioning script running a second time on `vagrant up`
 
-This can happen when VirtualBox loses its VM configurations, and Vagrant cannot find a VM with the previous provided ID. When this happens, Vagrant will instruct VirtualBox to create a brand new VM and rerun provisioning all over again. There is a check in place to make sure that the `workspace` folder isn't recreated when this happens. In this case, check your VirtualBox configuration, and re-add the VMs if possible, and remove the erroneously created VM. You will also need to follow the instructions in the next two sections.
+This can happen when VirtualBox loses its VM configurations, and Vagrant cannot find a VM with the previous provided ID. When this happens, Vagrant will instruct VirtualBox to create a brand new VM and rerun provisioning all over again. There is a check in place to make sure that the `workspace` directory isn't recreated when this happens. In this case, check your VirtualBox configuration, and re-add the VMs if possible, and remove the erroneously created VM. You will also need to follow the instructions in the next two sections.
 
-### Update Vagrant Folder to Point to a Different VM Instance
+### Update Vagrant directory to Point to a Different VM Instance
 
-When a new VM is created in an environment folder, its `.vagrant/machines/default/virtualbox/id` file will be updated to point to the new VM in VirtualBox. In order to point the environment to a different VM, in the case of the above scenario, you must find your VM's `.vbox` file, and copy the `Machine`'s `uuid` into this `id` file.
+When a new VM is created in an environment directory, its `.vagrant/machines/default/virtualbox/id` file will be updated to point to the new VM in VirtualBox. In order to point the environment to a different VM, in the case of the above scenario, you must find your VM's `.vbox` file, and copy the `Machine`'s `uuid` into this `id` file.
 
 ### Authentication Failure When Running `vagrant up`
 
@@ -337,12 +337,12 @@ It is possible, if the `.vagrant/machines/default/virtualbox/private_key` file b
 Listed here are all the parts you need to know about your new Vagrant environment and Craft installation.
 
 ```
-/.vagrant - Temporary working folder for Vagrant providers, stores configuration information, keys, etc. Generated and managed by Vagrant. Don't delete this if you have an active virtual machine tied to this folder.
+/.vagrant - Temporary working directory for Vagrant providers, stores configuration information, keys, etc. Generated and managed by Vagrant. Don't delete this if you have an active virtual machine tied to this directory.
 	/.vagrant/machines/default/virtualbox/private_key - Likely the only file here you will need to worry about. The default location of the vagrant user's SSH key used for tunneling from host to guest.
 /setup - Storage for scripts and utility files used by Vagrant automatically and available for use manually to vacilitate development. All scripts are documented.
 	app.php - Craft CMS app configuration that force loads the LoginHelper module.
 	ca-config.conf - A base configuration for creating a CA certificate to use in signing local development scripts.
-	craft-reset.sh - Deletes any existing craft environment/database and creates a new one from scratch, faster than restroying and recreating a whole box. THIS DELETES THE ENTIRE WORKSPACE FOLDER.
+	craft-reset.sh - Deletes any existing craft environment/database and creates a new one from scratch, faster than restroying and recreating a whole box. THIS DELETES THE ENTIRE WORKSPACE DIRECTORY.
 	FileMutex.php - See the section above in [Further Considerations](#further-considerations)
 	generate-ca-cert.sh - A reference script for generating a CA root SSL certificate.
 	generate-cert.sh - A reference script for generating an SSL certificate for HTTPS use on a local domain.
@@ -364,12 +364,12 @@ Listed here are all the parts you need to know about your new Vagrant environmen
 	start.sh - Vagrant post-startup script.
 	use-mysql.sh - Destroys the current Craft install and creates a new one using MySQL.
 	use-postgresql.sh - Destroys the current Craft install and creates a new one using PostgreSQL.
-/workspace - Synchronized to the virtual box's /var/www folder, used as a workspace for Craft sites and plugins. THIS IS DELETED ON VAGRANT DESTROY AND CRAFT RESET.
+/workspace - Synchronized to the virtual box's /var/www directory, used as a workspace for Craft sites and plugins. THIS IS DELETED ON VAGRANT DESTROY AND CRAFT RESET.
 	/config - Craft configuration.
-	/html - The public web root folder.
+	/html - The public web root directory.
 	/modules - Custom Yii modules for Craft.
-	/storage - Data storage folder for Craft and its plugins.
-	/templates - Craft template folder.
+	/storage - Data storage directory for Craft and its plugins.
+	/templates - Craft template directory.
 	/vendor - Installed composer packages.
 	.env - Environment configuration, not committed, this is where credentials and the like go.
 	composer.json - Composer configuration for the entire Craft package, including installed plugins.
