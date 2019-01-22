@@ -39,6 +39,9 @@ sudo yum -y install net-tools
 sudo yum -y install mariadb-server
 # Install git, to install Craft, and automate updates/deployment
 sudo yum -y install git
+# Install zip/unzip for archive management
+sudo yum -y install zip
+sudo yum -y install unzip
 # Install PHP 7 from the unofficial remi repository, allow additional modules to be installed from this repository, too (Official for CentOS/RHEL only goes up to PHP 5.6)
 sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sudo yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
