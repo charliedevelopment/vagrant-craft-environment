@@ -46,6 +46,8 @@ Run `vagrant plugin install vagrant-vbguest` to ensure the VirtualBox tools are 
 
 Open a shell/prompt and navigate to the Vagrant environment directory. Run `vagrant up` to start the guest virtual machine. The initial install process will take a while as it downloads the CentOS image, installs several packages, makes configuration changes, and ultimately sets up Craft.
 
+> **Important:** There may be an issue mounting the shared `workspace` directory on first installation, if this happens, check the *Doomsday Scenarios* section at the bottom of this document.
+
 That's all you need to do, once finished your Craft installation will be ready to use at [192.168.33.10](http://192.168.33.10/admin). The default Craft username is **admin** and the password is **craftdev**.
 
 Keep in mind that the initial install of craft (at least the release candidate versions) will not come with any default sections/fields/templates, and thus 404 on visiting anything but the control panel.
@@ -315,6 +317,32 @@ All shell scripts and the Vagrantfile itself are fully documented for reference.
 Because the workspace is deleted upon reset of craft and initialization of a new Vagrant instance, if the Vagrant instance is destroyed, it is recommended to recover any necessary files before starting a new instance in the same directory.
 
 ## Doomsday Scenarios
+
+### `/sbin/mount.vboxsf: mounting failed with the error: No such device`
+
+If you see a message like this when trying to run `vagrant up`:
+
+```
+Vagrant was unable to mount VirtualBox shared folders. This is usually
+because the filesystem "vboxsf" is not available. This filesystem is
+made available via the VirtualBox Guest Additions and kernel module.
+Please verify that these guest additions are properly installed in the
+guest. This is not a bug in Vagrant and is usually caused by a faulty
+Vagrant box. For context, the command attempted was:
+
+mount -t vboxsf -o dmode=775,fmode=774,umask=0002,uid=48,gid=48 var_www /var/www
+
+The error output from the command was:
+
+/sbin/mount.vboxsf: mounting failed with the error: No such device
+```
+
+It is possible that your box/tooling is out of date. Usually this can be fixed by running the following:
+
+- `vagrant box update` to update to the newest CentOS image.
+- `vagrant plugin update` to get the newest vbguest plugin.
+- `vagrant destroy` to delete the newly installed instance.
+- Finally `vagrant up` once again.
 
 ### Provisioning script running a second time on `vagrant up`
 
