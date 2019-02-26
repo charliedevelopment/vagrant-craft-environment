@@ -41,6 +41,8 @@ use yii\helpers\FileHelper;
  */
 class FileMutex extends Mutex
 {
+	use RetryAcquireTrait;
+
     /**
      * @var string the directory to store mutex files. You may use [path alias](guide:concept-aliases) here.
      * Defaults to the "mutex" subdirectory under the application runtime path.
@@ -89,11 +91,8 @@ class FileMutex extends Mutex
     protected function acquireLock($name, $timeout = 0)
     {
         $filePath = $this->getLockFilePath($name);
-        $waitTime = 0;
-
-        while (true) {
+        return $this->retryAcquire($timeout, function () use ($filePath, $name) {
             $file = fopen($filePath, 'w+');
-
             if ($file === false) {
                 return false;
             }
@@ -104,14 +103,8 @@ class FileMutex extends Mutex
 
             if (!flock($file, LOCK_EX | LOCK_NB)) {
                 fclose($file);
-
-                if (++$waitTime > $timeout) {
                     return false;
                 }
-
-                sleep(1);
-                continue;
-            }
 
             // Under unix we delete the lock file before releasing the related handle. Thus it's possible that we've acquired a lock on
             // a non-existing file here (race condition). We must compare the inode of the lock file handle with the inode of the actual lock file.
@@ -127,15 +120,12 @@ class FileMutex extends Mutex
                 clearstatcache(true, $filePath);
                 flock($file, LOCK_UN);
                 fclose($file);
-                continue;
+                return false;
             }
 
             $this->_files[$name] = $file;
             return true;
-        }
-
-        // Should not be reached normally.
-        return false;
+        });
     }
 
     /**
@@ -149,6 +139,11 @@ class FileMutex extends Mutex
             return false;
         }
 
+		// If PHP is running on a Unix VM within a Windows host, it's possible that while the directory separator
+		// does not indicate a windows machine, the filesystem restrictions are those of Windows. Instead of changing
+		// the behavior for each kind of detected system, simply try to unlink the file first (Unix behavior, fails
+		// on Windows) unlock the file (runs in both cases) and then unlink the file again (windows behavior, fails on
+		// Unix) ignoring errors from both unlink attempts.
         @unlink($this->getLockFilePath($name));
         flock($this->_files[$name], LOCK_UN);
         fclose($this->_files[$name]);
