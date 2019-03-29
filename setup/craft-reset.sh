@@ -100,7 +100,7 @@ if [[ $1 != "soft" ]]; then
 	# the class that gets copied over. In real production environments it won't matter, but in the case of
 	# Vagrant virtualization, Yii's mutex handling causes issues for Craft.
 	mutexmd5="$(md5sum /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php)"
-	if [[ $mutexmd5 == "c4f324714ee6b0cbbd30c14bbfeb8831  /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php" ]]; then
+	if [[ $mutexmd5 == "693b647756cd4970e798c520b233df35  /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php" ]]; then
 		rm -f /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php
 		cp /setup/FileMutex.php /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php
 	else
