@@ -93,27 +93,24 @@ fi
 
 ### Some really crazy stuff
 
-# Hard (quiet) reset only
-if [[ $1 != "soft" ]]; then
-	# This will check to see if we can replace the installed FileMutex class from Yii 2 with our own custom edits.
-	# The MD5 will change if the underlying file is ever changed, which should prompt a re-edit of this file and
-	# the class that gets copied over. In real production environments it won't matter, but in the case of
-	# Vagrant virtualization, Yii's mutex handling causes issues for Craft.
-	mutexmd5="$(md5sum /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php)"
-	if [[ $mutexmd5 == "693b647756cd4970e798c520b233df35  /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php" ]]; then
-		rm -f /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php
-		cp /setup/FileMutex.php /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php
-	else
-		echo "=================================================="
-		echo "The file at /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php has been"
-		echo "changed from the previous edition. Please edit manually with the"
-		echo "changes present within /setup/FileMutex.php"
-		echo "--------------------------------------------------"
-		echo "The filesystem restrictions of the VirtualBox environment can tend to"
-		echo "cause issues for Craft's job processing, because the processing uses"
-		echo "file mutexes, which run Unix-related code, even though the shared"
-		echo "folder system from VirtualBox honors and is restricted by Windows'"
-		echo "limitations instead, causing PHP to crash."
-		echo "=================================================="
-	fi
+# This will check to see if we can replace the installed FileMutex class from Yii 2 with our own custom edits.
+# The MD5 will change if the underlying file is ever changed, which should prompt a re-edit of this file and
+# the class that gets copied over. In real production environments it won't matter, but in the case of
+# Vagrant virtualization, Yii's mutex handling causes issues for Craft.
+mutexmd5="$(md5sum /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php)"
+if [[ $mutexmd5 == "693b647756cd4970e798c520b233df35  /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php" ]]; then
+	rm -f /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php
+	cp /setup/FileMutex.php /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php
+else
+	echo "=================================================="
+	echo "The file at /var/www/vendor/yiisoft/yii2/mutex/FileMutex.php has been"
+	echo "changed from the previous edition. Please edit manually with the"
+	echo "changes present within /setup/FileMutex.php"
+	echo "--------------------------------------------------"
+	echo "The filesystem restrictions of the VirtualBox environment can tend to"
+	echo "cause issues for Craft's job processing, because the processing uses"
+	echo "file mutexes, which run Unix-related code, even though the shared"
+	echo "folder system from VirtualBox honors and is restricted by Windows'"
+	echo "limitations instead, causing PHP to crash."
+	echo "=================================================="
 fi
