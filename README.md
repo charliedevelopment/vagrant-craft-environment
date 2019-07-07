@@ -30,6 +30,8 @@ Vagrant can be found here: https://www.vagrantup.com/downloads.html
 
 ### Install VirtualBox
 
+> **Important** As of VirtualBox 6.0.8 (2019/7/7), there is an environmental issue with Composer actions on the shared workspace folder under a Windows host. It is recommended to use 5.x if running under a windows system, for now.
+
 Historically, VirtualBox has updated and been incompatible with Vagrant until Vagrant has some time to update as well. Be sure to [check the VirtualBox versions compatible with the current version of Vagrant](https://www.vagrantup.com/docs/virtualbox/).
 
 VirtualBox can be found here: https://www.virtualbox.org/wiki/Downloads
