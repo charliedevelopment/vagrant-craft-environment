@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script requires a Composer package (Craft plugin) from an external repository and then installs it.
 # It should be run from the vagrant environment folder of the HOST with the following options:
 #

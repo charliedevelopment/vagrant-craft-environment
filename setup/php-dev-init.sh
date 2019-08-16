@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script runs some additional provisioning for the purpose of PHP development.
 # This script can be run manually at any time from the HOST.
 # This script should only be run once.

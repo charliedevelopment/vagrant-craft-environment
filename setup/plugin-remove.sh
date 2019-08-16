@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script uninstalls Composer package (Craft plugin).
 # It should be run from the vagrant environment folder of the HOST with the following options:
 #

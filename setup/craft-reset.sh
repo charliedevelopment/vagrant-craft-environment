@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script sets up Craft, removing any existing database and workspace if necessary.
 # This script can be run manually at any time from the GUEST.
 # Pass `soft` as the first parameter if the Craft DB should be cleared and Craft reinstalled

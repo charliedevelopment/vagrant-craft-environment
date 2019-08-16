@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script installs a certificate for a development site.
 # It should be run from the vagrant environment folder of the HOST with the following options:
 #

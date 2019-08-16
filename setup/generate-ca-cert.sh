@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script generates a CA certificate with a default configuration.
 # It should be run directly from its own folder on the HOST, though it is recommended to manually edit
 # the configuration and change the location of the output files first, depending on your needs.

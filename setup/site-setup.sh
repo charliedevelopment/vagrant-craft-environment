@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script automates/acts as a reference for cloning a Craft site repository into the workspace.
 # It should be run from the vagrant environment directory of the HOST with the following options:
 #

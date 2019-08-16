@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script runs on the GUEST the first time provisioning a virtual box.
 # Do not run this script manually, Vagrant does this for you.
 

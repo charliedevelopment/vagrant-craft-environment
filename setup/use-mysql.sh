@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script switches from PostgreSQL to MySQL (Mariadb).
 # This script can be run at any time from the GUEST.
 # THIS WILL RESET THE CRAFT INSTALLATION AND DELETE ALL EXISTING DATA

@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script runs craft-reset.sh from the HOST on the GUEST.
 # craft-reset.sh sets up Craft, removing any existing database and workspace if necessary.
 # Pass `soft` as the first parameter if the Craft DB should be cleared and Craft reinstalled

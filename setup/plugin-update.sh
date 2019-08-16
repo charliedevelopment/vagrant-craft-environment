@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script force updates a Composer package (Craft plugin) from its underlying repository by copying the repository and updating from the same thing.
 # It should be run from the vagrant environment folder of the HOST with the following options:
 #

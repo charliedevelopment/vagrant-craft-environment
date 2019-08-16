@@ -1,3 +1,4 @@
+#!/bin/bash
 # This script generates a certificate for a development site, signing it based on a provided
 # CA certificate configuration.
 # It should be run directly from its own folder on the HOST with the following options:
